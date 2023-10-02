@@ -79,7 +79,7 @@ To run as root, you must specify an alternate user data directory with the --use
 
 ### Process completed (signal 9)
 
-另外，在使用 VNC 连接图形界面过程中，经常发生进程奔溃，我查到此问题会发生在 Android 12 下的 Termux。参考自 [Termux "Process completed (signal 9)" 错误解决方式](https://www.bilibili.com/video/BV1aZ4y1C73E)
+另外，在使用 VNC 连接图形界面过程中，经常发生进程奔溃，我查到此问题会发生在 Android 12 下的 Termux。参考自 [Termux "Process completed (signal 9)" 错误解决方式](https://www.bilibili.com/video/BV1aZ4y1C73E)。（也可以看我的另一篇文章[通过无线调试解决 Termux “Process completed (signal 9)”](/post/resolving-termux-signal-9-with-wireless-debugging)）
 
 解决方法：
 
