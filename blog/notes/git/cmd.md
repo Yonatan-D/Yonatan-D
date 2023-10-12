@@ -158,7 +158,7 @@ git commit --amend HEAD~1
 git reset --soft HEAD~1
 ```
 
-可以撤消任意数量的提交，例如：git reset HEAD~3（返回 HEAD 之前的 3 个提交)
+可以撤消任意数量的提交，例如：`git reset HEAD~3`（返回 HEAD 之前的 3 个提交)
 
 17. 撤消提交和更改（丢弃更改）
 
@@ -166,7 +166,7 @@ git reset --soft HEAD~1
 git reset --hard HEAD~1
 ```
 
-返回特定的提交：git reset --hard <commit_id>
+返回特定的提交：`git reset --hard <commit_id>`
 
 18. 撤消提交而不修改现有历史记录（创建新的提交来撤消提交）
 
