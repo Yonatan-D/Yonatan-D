@@ -217,4 +217,4 @@ docker exec -it gitlab gitlab-ctl reconfigure
 
 > `prometheus_monitoring['enable'] = false` 是把 Prometheus 给关了，但关闭后也可以选择使用外部 Prometheus。gitlab 服务器已经包含了node-exporter 服务，接口是 http://ip:9100/metrics ，想要在外部使用还必须先改一项配置，打开 `/home/dockerapps/gitlab/data/embedded/cookbooks/monitoring/attributes/default.rb` ，把 localhost:9100 改成 0.0.0.0:9100，然后重载配置 gitlab-ctl reconfigure
 
-实测，在我的 1 核 2 G云服务器上跑了宝塔面板和 gitlab 服务，还有 10% 左右可用内存。不过我个人用不到太多功能，因此后来我替换成 gitea，可用内存多出了 30%。
+因为 gitlab 使用体验不错，于是我也给自己搭建了个人代码库。实测，资源限制后在我的 1 核 2 G云服务器上跑了宝塔面板和 gitlab 服务，还有 10% 左右可用内存。不过我用不到太多功能，后来我替换成 gitea，可用内存多出了 30%。
