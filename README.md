@@ -7,8 +7,8 @@
   <samp>
     <a href="https://yonatan.cn/me">me</a> .
     <a href="https://yonatan.cn/posts">blog</a> .
-    <a href="https://yonatan.cn/notes/map">note</a> .
-    <a href="https://yonatan.cn/resume">resume</a>
+    <a href="https://yonatan.cn/notes/map">note</a> 
+    <!-- <a href="https://yonatan.cn/resume">resume</a/> -->
   </samp>
 </p>
 
