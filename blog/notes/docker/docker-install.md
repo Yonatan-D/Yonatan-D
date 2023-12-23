@@ -3,7 +3,7 @@
 1. 自动化脚本安装 `Hello`
 
 ```bash
-curl -sSL https://get.daocloud.io/docker | sh
+curl -sSL https://get.docker.com | sh
 ```
 
 2. 逐步安装
@@ -18,6 +18,9 @@ cp docker/* /usr/bin/
 
 
 vim /etc/systemd/system/docker.service
+# -------------------------------- #
+# docker.service start
+# -------------------------------- #
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
@@ -45,10 +48,16 @@ StartLimitInterval=60s
 
 [Install]
 WantedBy=multi-user.target
+# -------------------------------- #
+# docker.service end
+# -------------------------------- #
 
 
 
 vim /etc/systemd/system/docker.socket
+# -------------------------------- #
+# docker.socket start
+# -------------------------------- #
 [Unit]
 Description=Docker Socket for the API
 PartOf=docker.service
@@ -61,6 +70,11 @@ SocketGroup=docker
 
 [Install]
 WantedBy=sockets.targe
+# -------------------------------- #
+# docker.socket end
+# -------------------------------- #
+
+
 
 chmod +x /etc/systemd/system/docker.service
 systemctl daemon-reload
