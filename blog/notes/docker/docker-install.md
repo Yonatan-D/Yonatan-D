@@ -1,6 +1,6 @@
 ## 安装
 
-1. 自动化脚本安装 `Hello`
+1. 自动化脚本安装
 
 ```bash
 curl -sSL https://get.docker.com | sh
