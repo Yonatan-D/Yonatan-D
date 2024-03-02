@@ -1,4 +1,6 @@
-- [Git](/notes/git/cmd)
+- Git
+  - [基本操作](/notes/git/cmd)
+  - [工作流程](/notes/git/flow)
 - 前端
 - NodeJS
   - [NPM](/notes/nodejs/)
