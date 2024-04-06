@@ -1,6 +1,6 @@
 <h2 style="text-align: center;">Yonatan</h2>
 
-> Hey, I’m Yonatan, a full stack  development engineer.  
+> Hey, I am Yonatan, a full stack developer. Focuses on JavaScript.  
 > Outside of programming, I enjoy watching anime and movie.  
 > 98年打杂工程师，热衷于 Web 开发，探索与分享是一段愉悦的旅程。  
 > 工作之余，喜欢看动画和电影。  
