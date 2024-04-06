@@ -14,3 +14,8 @@
   - [白名单 (iptables)](/notes/docker/docker-network)
   - [清理占用](/notes/docker/docker-clean)
   - [常见问题](/notes/docker/docker-faq)
+- GitLab
+  - [安装使用](/notes/gitlab/gitlab-install)
+  - [Pages](/notes/gitlab/gitlab-pages)
+  - [Runner](/notes/gitlab/gitlab-runner)
+  - [CI](/notes/gitlab/gitlab-ci)
