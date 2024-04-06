@@ -45,6 +45,23 @@ docker run -d \
 
 <!-- tabs:end -->
 
+## 修改时区
+
+默认时区是 UTC，创建和提交信息会有 8 小时时差
+
+修改时区后只对新增的提交有效，之前的时间不会变回来
+
+```bash
+vim /apps/gitlab/config/gitlab.yml
+
+# gitlab_rails['time_zone'] = 'UTC'
+# 修改为
+gitlab_rails['time_zone'] = 'Asia/Shanghai'
+
+docker exec -it gitlab gitlab-ctl reconfigure
+docker exec -it gitlab gitlab-ctl restart
+```
+
 ## 备份
 
 ```bash
