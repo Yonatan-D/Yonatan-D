@@ -52,7 +52,7 @@ docker run -d \
 修改时区后只对新增的提交有效，之前的时间不会变回来
 
 ```bash
-vim /apps/gitlab/config/gitlab.yml
+vim /apps/gitlab/config/gitlab.rb
 
 # gitlab_rails['time_zone'] = 'UTC'
 # 修改为
