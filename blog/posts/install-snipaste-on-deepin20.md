@@ -10,7 +10,7 @@ Snipaste Linux 公测版 (AppImage): v2.9-Beta (2024.04.24)，在 Deepin 20 上�
 
 在终端中运行能看到错误输出，失败的原因是 glibc 版本太低，运行结果：
 
-![image-20240629132309663](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240629132309663.png)
+![image-20240629132309663](./install-snipaste-on-deepin20.assets/image-20240629132309663.png)
 
 这是因为程序需要 glibc 库 2.29 版本，而 deepin 20.9 自带的是 2.28 版本。
 
@@ -45,9 +45,9 @@ sudo apt install additional-base-lib
 
 2. 使用 ablrun 启动截图工具
 
-![image-20240629171457492](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240629171457492.png)
+![image-20240629171457492](./install-snipaste-on-deepin20.assets/image-20240629171457492.png)
 
-![image-20240629133512971](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240629133512971.png)
+![image-20240629133512971](./install-snipaste-on-deepin20.assets/image-20240629133512971.png)
 
 现在已经可以使用截图工具了，虽然在末尾加个 “&” 可以避免关闭终端后程序被退出，但是这样使用不够方便。
 
@@ -63,15 +63,15 @@ ablrun ./Snipaste-2.9-Beta2-x86_64.AppImage
 
 建议把程序和脚本放到 /opt 目录下：
 
-![image-20240630005414150](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240630005414150.png)
+![image-20240630005414150](./install-snipaste-on-deepin20.assets/image-20240630005414150.png)
 
 pm2 使用步骤：
 
 （1）把 pm2 设置成开机启动。运行 `pm2 startup `命令返回的命令
 
-![image-20240630005820617](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240630005820617.png)
+![image-20240630005820617](./install-snipaste-on-deepin20.assets/image-20240630005820617.png)
 
-![image-20240630010115637](/home/yonatan/Code/yont/Yonatan-D/blog/posts/install-snipaste-on-deepin20.assets/image-20240630010115637.png)
+![image-20240630010115637](./install-snipaste-on-deepin20.assets/image-20240630010115637.png)
 
 （2）使用 pm2 启动截图工具
 
