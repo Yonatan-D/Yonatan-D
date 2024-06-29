@@ -60,6 +60,7 @@ sudo apt install additional-base-lib
 ```bash
 # start.sh
 #!/bin/bash
+cd $(dirname $0)
 ablrun ./Snipaste-2.9-Beta2-x86_64.AppImage
 ```
 
