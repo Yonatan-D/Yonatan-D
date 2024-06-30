@@ -21,9 +21,9 @@ Snipaste Linux 公测版 (AppImage): v2.9-Beta (2024.04.24)，在 Deepin 20 上�
 ldd --version
 ```
 
-很多文章会教如何升级 glibc，但其实风险很大，glibc 是很重要的基础库，贸然操作非常容易造成系统损坏。
+很多文章会教如何升级 glibc，但这风险很大，glibc 是很重要的基础库，贸然操作非常容易造成系统损坏。
 
-可操作的思路是把 AppImage 解包，找到存放依赖的目录修改依赖引用，或是从源码重新编译一个适用版本。不过这些操作都过于复杂。
+一般对于这类问题可操作的思路是把 AppImage 解包，找到存放依赖的目录修改依赖引用，或是从源码重新编译一个适用版本。不过这些操作都过于复杂。
 
 ```bash
 # 解包 AppImage
@@ -33,7 +33,7 @@ cd squashfs-root
 ./AppRun
 ```
 
-后来在 deepin 论坛找到了更简单的解决办法。一般情况，可以先尝试使用社区里分享的一个解决 glibc 版本问题的小工具：https://gitee.com/spark-store-project/additional-base-lib，可能有奇效。
+我在 deepin 论坛找到了更简单的解决办法。可以先尝试使用社区里分享的一个解决 glibc 版本问题的小工具：https://gitee.com/spark-store-project/additional-base-lib，可能有奇效。
 
 
 
@@ -51,9 +51,7 @@ sudo apt install additional-base-lib
 
 ![image-20240629133512971](./install-snipaste-on-deepin20.assets/image-20240629133512971.png)
 
-现在已经可以使用截图工具了，虽然在末尾加个 “&” 可以避免关闭终端后程序被退出，但是这样使用不够方便。
-
-3.设置成开机启动的方法有很多种，例如 rc.local、systemed、supervisor，我用的是 pm2
+3.现在已经可以使用截图工具了，但是关闭终端后程序会被退出，而且每次这样启动也很繁琐。因此除了解决后台运行，还要设置成开机启动。实现开机启动的工具方法有很多种，例如 rc.local、systemed、supervisor，我用的是 pm2 ，它提供了很方便的命令：
 
 首先写一个启动脚本：
 
@@ -70,16 +68,20 @@ ablrun ./Snipaste-2.9-Beta2-x86_64.AppImage
 
 pm2 使用步骤：
 
-（1）把 pm2 设置成开机启动。运行 `pm2 startup `命令返回的命令
+（1）把 pm2 服务设置成开机启动。先运行 `pm2 startup `命令，再运行返回的命令
 
 ![image-20240630005820617](./install-snipaste-on-deepin20.assets/image-20240630005820617.png)
+
+可以看出这条命令帮我生成了pm2 的 systemd 配置文件，并设为开机启动
 
 ![image-20240630010115637](./install-snipaste-on-deepin20.assets/image-20240630010115637.png)
 
 （2）使用 pm2 启动截图工具
 
 ```bash
+# 首次启动指定名称为 snipaste，后续可以用 pm2 [start|stop|restart] snipaste 进行管理
 pm2 start --name snipaste start.sh
+# 保存, 否则重启后丢失
 pm2 save
 ```
 
@@ -98,4 +100,4 @@ pm2 stop snipaste
 pm2 start snipaste
 ```
 
-目前已知该版本的 Snipaste 有个问题，右下角托盘只有首次右键可以打开菜单，后面如果不重启程序是不能正常显示右键菜单的。
+目前已知该版本的 Snipaste 有个问题，右下角托盘只有首次右键可以打开菜单，后面如果不重启程序则不能正常显示右键菜单。
