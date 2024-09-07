@@ -6,7 +6,7 @@
 
 ## 2023
 
-* 2023-10-02 [通过无线调试解决 Termux “Process completed (signal 9)”](/posts/resolving-termux-signal-9-with-wireless-debugging)
+* 2023-10-02 [Termux "Process completed (signal 9)" 的免连接电脑解决方式](/posts/resolving-termux-signal-9-with-wireless-debugging)
 
 * 2023-08-08 [Gitea 的安装、备份与恢复](/posts/gitea-install-dump-restore)
 

@@ -1,4 +1,4 @@
-# 通过无线调试解决 Termux “Process completed (signal 9)”
+# Termux "Process completed (signal 9)" 的免连接电脑解决方式
 
 {docsify-my-updater}
 
