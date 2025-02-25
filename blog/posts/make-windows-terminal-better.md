@@ -4,7 +4,7 @@
 
 ## 前言
 
-教你搞掂 windows terminal + git bash 配置，获得更接近 Linux 体验的终端环境，非 wsl。
+教你搞掂 windows terminal + git bash 配置，获得更接近 linux 体验的终端环境，非 wsl。
 
 这个方案缺点是终端启动速度慢，使用 zsh 后就更慢了。
 
