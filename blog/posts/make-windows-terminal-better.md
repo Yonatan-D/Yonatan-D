@@ -4,7 +4,11 @@
 
 ## 前言
 
-教你搞掂 windows terminal + git bash 配置，非 wsl。这个方案缺点是终端启动速度很慢，使用 zsh 后就更慢了。
+教你搞掂 windows terminal + git bash 配置，获得更接近 Linux 体验的终端环境，非 wsl。
+
+这个方案缺点是终端启动速度慢，使用 zsh 后就更慢了。
+
+## 配置步骤
 
 1. 安装 git，将 `C:\Program Files\Git\bin` 配置到环境变量 `PATH` 中
 
