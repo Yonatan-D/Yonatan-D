@@ -19,5 +19,7 @@
   - [Pages](/notes/gitlab/gitlab-pages)
   - [Runner](/notes/gitlab/gitlab-runner)
   - [CI](/notes/gitlab/gitlab-ci)
+- Multipass
+  - [解决打开实例shell超时](/notes/multipass/multipass-timeout)
 - WSL
   - [解决每次重启需要重置winsock](/notes/wsl/wsl-winsock)
