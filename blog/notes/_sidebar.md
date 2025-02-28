@@ -19,3 +19,5 @@
   - [Pages](/notes/gitlab/gitlab-pages)
   - [Runner](/notes/gitlab/gitlab-runner)
   - [CI](/notes/gitlab/gitlab-ci)
+- WSL
+  - [解决每次重启需要重置winsock](/notes/wsl/wsl-winsock)
