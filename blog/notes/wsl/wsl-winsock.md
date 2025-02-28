@@ -3,8 +3,8 @@
 win11 wsl 某次更新系统后，每次重启都要在 cmd 用管理员权限运行 `netsh winsock reset` ，否则会报错：
 
 ```bash
-The stub received bad data.
-Error code: Wsl/Service/0x800706f7
+参考的对象类型不支持尝试的操作。
+Error code: Wsl/Service/0x8007273d
 Press any key to continue...
 ```
 
