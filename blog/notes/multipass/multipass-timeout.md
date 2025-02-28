@@ -1,6 +1,6 @@
 # 解决打开实例shell超时
 
-记录一次因为系统升级导致 `multipass` 打开实例shell超时的问题，只对有用，仅供参考。
+记录一次因为系统升级导致 `multipass` 打开实例shell超时的问题，只对我有用，仅供参考。
 
 1. 停止 “Multipass” 服务，并结束掉 “multipassd.exe” 任务
 
