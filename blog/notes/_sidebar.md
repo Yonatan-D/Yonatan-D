@@ -1,3 +1,4 @@
+- [Ollama](/notes/ollama/ollama)
 - Git
   - [基本操作](/notes/git/cmd)
   - [工作流程](/notes/git/flow)
