@@ -2,7 +2,7 @@
 
 [查阅](/notes/mobile/mobile-android-debug)
 
-工具效率 | 搬砖笔记 | 错误解决
+工具效率 | 搬砖日记 | 问题排查 | 错误解决
 
 [目录](/notes)
 
