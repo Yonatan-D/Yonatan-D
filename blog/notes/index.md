@@ -1,6 +1,10 @@
 # Note
 
-记录工作中遇到的错误解决方法
+[查阅](/notes/mobile/mobile-android-debug)
+
+工具效率 | 搬砖笔记 | 错误解决
+
+[目录](/notes)
 
 ```markmap
 ---
