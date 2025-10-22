@@ -1,3 +1,5 @@
+- [Gists](/notes/pinned/gists)
+- [Snippets](/notes/pinned/snippets)
 - 移动端
   - [移动端调试技巧](/notes/mobile/mobile-android-debug)
 - 统信UOS

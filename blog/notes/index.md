@@ -1,6 +1,6 @@
 # Note
 
-[查阅](/notes/mobile/mobile-android-debug)
+[查阅](/notes/pinned/gists)
 
 工具效率 | 搬砖日记 | 问题排查 | 错误解决
 
