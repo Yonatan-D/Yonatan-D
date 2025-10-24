@@ -3,6 +3,10 @@
 - 问题排查
   - [移动端调试技巧](/notes/mobile/mobile-android-debug)
 - 错误解决
+  - [yarn install 报错 is incompatible with this module](/notes/error/error-yarn-install-incompatible-with-this-module)
+  - [docker 添加 log 配置后启动失败](/notes/error/error-docker-daemon.json-log)
+  - [GitLab 容器启动报错](/notes/error/error-gitlab-ulimit-file-max)
+  - [UOS 遇到 Error: ENOSPC: System limit for number of file watchers reached](/notes/error/error-uos-limit-file-watchers-reached)
 - 工具效率
   - AI
     - [ollama](/notes/ai/ai-ollama)
