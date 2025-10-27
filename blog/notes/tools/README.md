@@ -14,6 +14,8 @@ markmap:
 # Tools
   - AI
     - [ollama](/notes/tools/ai/ai-ollama)
+  - [Curl](/notes/tools/curl/gists)
+  - [DB](/notes/tools/db/sql)
   - Docker
     - [安装使用](/notes/tools/docker/docker-install)
     - [推荐配置](/notes/tools/docker/docker-daemon)
@@ -30,6 +32,8 @@ markmap:
     - [CI](/notes/tools/gitlab/gitlab-ci)
   - Multipass
     - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
+  - [Nginx](/notes/tools/nginx/faq)
+  - [Redis](/notes/tools/redis/benchmark)
   - UOS
     - [问题解决](/notes/tools/uos/uos-faq)
     - [软件安装问题](/notes/tools/uos/uos-software)

@@ -30,3 +30,129 @@ function wxProxy(wx) {
 ```
 
 更多用法（解决加载过程中loading重复刷新、路由跳转拦截）：https://github.com/Yonatan-D/wechat-snippets
+
+## 批量 require 目录下的 *.Controller.js 文件
+
+```js
+const controllers = require('require-all')({
+  dirname: path.join(__dirname, './controllers'),
+  filter: /(.+Controller)\.js$/,
+  resolve: (controller) => {
+    return controller(app);
+  }
+});
+
+if (!app.Controller) app.Controller = {};
+app.Controller = { ...app.Controller, ...controllers };
+```
+
+## gulp 混淆加密
+
+npx gulp --srcDir=/path/to/project_dir
+
+```js
+// gulpfile.js
+const gulp = require('gulp');
+const { series } = gulp;
+const del = require('del');
+const javascriptObfuscator = require('gulp-javascript-obfuscator');
+let minimist = require('minimist');
+let options = minimist(process.argv.slice(2));
+let { srcDir } = options;
+const distDir = ['dist'];
+
+function clean(cb) {
+  return del([
+    `output/${srcDir}/**/*`
+  ], cb);
+}
+
+function buildServer(cb) {
+  let output = `output/${srcDir}`;
+
+  gulp.src([`source/${srcDir}/**/*.*`, `!source/${srcDir}/**/*.js`])
+    .pipe(gulp.dest(`${output}`).on("end", cb));
+
+  gulp.src([`source/${srcDir}/**/*.js `, ...distDir.map(dir => `!source/${srcDir}/${dir}/**/*.js`)])
+    .pipe(javascriptObfuscator({
+      compact: true,
+      controlFlowFlattening: false,
+      deadCodeInjection: false,
+      debugProtection: false,
+      debugProtectionInterval: false,
+      disableConsoleOutput: false,
+      identifierNamesGenerator: 'hexadecimal',//16机制变名
+      log: false,
+      renameGlobals: false,
+      seed: 0,
+      rotateStringArray: true,//
+      selfDefending: true,//主动防御
+      shuffleStringArray: true,//
+      splitStrings: false,
+      stringArray: true,//
+      stringArrayEncoding: 'base64',
+      stringArrayThreshold: 0.75,//
+      unicodeEscapeSequence: false,
+      target: 'node'
+    }))
+    .pipe(gulp.dest(`${output}`).on("end", cb));
+}
+
+function copyDist(cb) {
+  distDir.forEach(dist => {
+    let output = `output/${srcDir}/${dist}`;
+
+    gulp.src([`source/${srcDir}/${dist}/**/*.js`])
+      .pipe(gulp.dest(`${output}`).on("end", cb));
+  })
+}
+
+exports.default = series(clean, buildServer, copyDist);
+```
+
+## 检测图片是否存在
+
+```js
+const imageIsExist = (url) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      if (this.complete == true){
+        resolve(true);
+        img = null;
+      }
+    }
+    img.onerror = () => {
+      resolve(false);
+      img = null;
+    }
+    img.src = url;
+  })
+}
+```
+
+## iframe实现全屏，自适应浏览器高度
+
+```html
+<!-- https://blog.csdn.net/qq_40542534/article/details/111238522 -->
+
+<iframe id="iframe"
+        name="iframe"
+        height="100%"
+        width="100%"
+        src="https://notes.yonatan.cn"
+        scrolling="auto"
+        frameborder="0"
+        onload="changeFrameHeight()">
+</iframe>
+
+<script>
+  function changeFrameHeight() {
+    var iframe = document.getElementById("iframe");
+    iframe.height = document.documentElement.clientHeight;
+  }
+  window.onresize = function() {
+    changeFrameHeight();
+  }
+</script>
+```

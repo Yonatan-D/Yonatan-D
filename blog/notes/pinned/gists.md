@@ -12,6 +12,18 @@ ps -ef | grep 程序名 | awk '{print $2}' | xargs kill -9
 du -h --max-depth=1 | sort -hr
 ```
 
+## 查看执行过的命令带日期时间
+
+```sh
+history -i
+```
+
+## 查看 linux 设备 CPU 核数
+
+```sh
+cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+```
+
 ## 按两下 Esc 键往上条命令或者当前正在输入的命令前加上（或删去） "sudo"
 
 添加到 .bashrc 或 .zshrc 文件
@@ -68,3 +80,36 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 # 查看路由表
 route print
 ```
+
+## 添加 Typora 到右键
+
+```reg
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\Typora]
+"icon"="D:\\Program Files\\Typora\\Typora.exe"
+@="Open With Typora"
+
+[HKEY_CLASSES_ROOT\*\shell\Typora\command]
+@="D:\\Program Files\\Typora\\Typora.exe" "%1"
+```
+
+## 删除运行输入过的命令
+
+```bat
+@ECHO OFF
+REG DELETE HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /f
+echo "已清除历史命令"
+PAUSE
+
+rem .REG 的写法
+rem Windows Registry Editor Version 5.00
+rem [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU] "MRUList"=-
+```
+
+## 加签和加密的区别
+
+简单的说，两个区别： 应用场景不同：签名是为了宣告所有权，加密是为了秘密传送信息； 实现方式不同：签名是用私钥，公钥用来验证；加密使用公钥，解密用私钥。
+
+A的签名只有A的公钥才能解签，这样B就能确认这个信息是A发来的；
+A的加密只有B的私钥才能解密，这样A就能确认这份信息只能被B读取。

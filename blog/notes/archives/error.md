@@ -1,5 +1,77 @@
 # 报错解决
 
+## redis 安装报错 jemalloc/jemalloc.h: No such file or directory
+
+首先编译 Redis 需要先安装 gcc-c++
+
+然后这个报错是因为没有清除上次编译残留文件
+
+清理后重新编译就可以了：
+
+```sh
+make distclean && make
+```
+
+## npm install grpc 失败
+
+报错信息：
+
+```sh
+Failed to load gRPC binary module because it was not installed for the current system Expected directory
+```
+
+使用 grpc_node_binary_host_mirror 参数设置国内镜像地址。解决办法：
+
+```sh
+npm install grpc --grpc_node_binary_host_mirror=https://npmmirror.com/mirrors/ --registry=https://registry.npmmirror.com
+```
+
+> grpc_node_binary_host_mirror 可以配置到 .npmrc 文件中，永久生效
+
+## kill掉redis进程后重启失败
+
+报错信息：
+
+```sh
+process is already running or crashed
+```
+
+尝试kill掉 /var/run/redis.pid 里的进程号，即 ps 查出来的第一行的 pid，结束进程。再次重启可能会出现 `process is already running or crashed` 的报错，这是因为进程号不一致导致的。
+
+删掉 /var/run/redis.pid ，重启 redis 即可解决：
+
+```sh
+rm /var/run/redis.pid
+```
+
+## linux执行shell脚本报错：No such file or directory
+
+windows下创建的编码格式是doc，在linux下执行会报 No such file or directory。解决方法是：用 vim，touch 命令新建文件；已经创建的用 :set ff 查看和转换，或者使用 notepad++ 等文本编辑器快速转换。
+
+解决办法：
+
+```sh
+:set ff=unix
+```
+
+## LF will be replaced by CRLF
+
+报错信息：
+
+```sh
+warning: LF will be replaced by CRLF
+warning: LF will be replaced by CRLF in xxxxx
+The file will have its original line endings in your working directory.
+```
+
+在 Windows 系统中，Git 将把 Unix 风格的换行符（LF）替换为 Windows 风格的换行符（CRLF）。
+
+跨平台开发中常见问题，可以关闭自动替换避免警告。解决办法：
+
+```sh
+git config --global core.autocrlf false
+```
+
 ## UOS 遇到 Error: ENOSPC: System limit for number of file watchers reached
 
 报错信息：
