@@ -29,4 +29,4 @@ function wxProxy(wx) {
 }
 ```
 
-更多用法：https://github.com/Yonatan-D/wechat-snippets
+更多用法（解决加载过程中loading重复刷新、路由跳转拦截）：https://github.com/Yonatan-D/wechat-snippets
