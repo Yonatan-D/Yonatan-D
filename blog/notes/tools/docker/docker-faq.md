@@ -1,4 +1,4 @@
-## FAQ
+# FAQ
 
 ### 迁移 docker 目录
 

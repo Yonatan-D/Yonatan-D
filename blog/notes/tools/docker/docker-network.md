@@ -1,4 +1,4 @@
-## 白名单 (iptables)
+# 白名单 (iptables)
 
 拒绝所有访问
 

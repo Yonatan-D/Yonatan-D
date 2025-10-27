@@ -1,34 +1,28 @@
-- [Gists](/notes/pinned/gists)
-- [Snippets](/notes/pinned/snippets)
-- 问题排查
-  - [移动端调试技巧](/notes/mobile/mobile-android-debug)
-- 错误解决
-  - [yarn install 报错 is incompatible with this module](/notes/error/error-yarn-install-incompatible-with-this-module)
-  - [docker 添加 log 配置后启动失败](/notes/error/error-docker-daemon.json-log)
-  - [GitLab 容器启动报错](/notes/error/error-gitlab-ulimit-file-max)
-  - [UOS 遇到 Error: ENOSPC: System limit for number of file watchers reached](/notes/error/error-uos-limit-file-watchers-reached)
-- 工具效率
+- [Gists](/notes/gists)
+- [Snippets](/notes/snippets)
+- [问题排查](/notes/debug)
+- [报错解决](/notes/error)
+- [工具效率](/notes/tools/)
   - AI
-    - [ollama](/notes/ai/ai-ollama)
+    - [ollama](/notes/tools/ai/ai-ollama)
   - Docker
-    - [安装使用](/notes/docker/docker-install)
-    - [推荐配置](/notes/docker/docker-daemon)
-    - [白名单 (iptables)](/notes/docker/docker-network)
-    - [清理占用](/notes/docker/docker-clean)
-    - [常见问题](/notes/docker/docker-faq)
+    - [安装使用](/notes/tools/docker/docker-install)
+    - [推荐配置](/notes/tools/docker/docker-daemon)
+    - [白名单 (iptables)](/notes/tools/docker/docker-network)
+    - [清理占用](/notes/tools/docker/docker-clean)
+    - [常见问题](/notes/tools/docker/docker-faq)
   - Git
-    - [基本操作](/notes/git/git-cmd)
-    - [工作流程](/notes/git/git-flow)
+    - [基本操作](/notes/tools/git/git-cmd)
+    - [工作流程](/notes/tools/git/git-flow)
   - GitLab
-    - [安装使用](/notes/gitlab/gitlab-install)
-    - [Pages](/notes/gitlab/gitlab-pages)
-    - [Runner](/notes/gitlab/gitlab-runner)
-    - [CI](/notes/gitlab/gitlab-ci)
+    - [安装使用](/notes/tools/gitlab/gitlab-install)
+    - [Pages](/notes/tools/gitlab/gitlab-pages)
+    - [Runner](/notes/tools/gitlab/gitlab-runner)
+    - [CI](/notes/tools/gitlab/gitlab-ci)
   - Multipass
-    - [解决打开实例shell超时](/notes/multipass/multipass-timeout)
+    - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
   - UOS
-    - [软件安装问题](/notes/uos/uos-software)
+    - [软件安装问题](/notes/tools/uos/uos-software)
   - WSL
-    - [解决每次重启需要重置winsock](/notes/wsl/wsl-winsock)
-- 搬砖日记
-  - [07-01](/notes/daily/daily-0701)
+    - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)
+- [搬砖日记](/notes/daily)

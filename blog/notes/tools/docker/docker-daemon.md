@@ -1,4 +1,4 @@
-## 推荐配置 （daemon.json）
+# 推荐配置 （daemon.json）
 
 1. 打开 daemon.json 文件，没有就新建
 

@@ -1,20 +1,22 @@
-# Android调试技巧
+# 问题排查
+
+## Android调试技巧
 
 adb工具下载：https://googledownloads.cn/android/repository/platform-tools-latest-windows.zip
 
-## 查看第三方应用包名
+### 查看第三方应用包名
 
 ```shell
 adb shell pm list packages -3
 ```
 
-## 查看uniapp的运行日志
+### 查看uniapp的运行日志
 
 ```shell
 adb shell "logcat | grep 'console :'"
 ```
 
-## 设置fiddle代理进行抓包
+### 设置fiddle代理进行抓包
 
 背景：不具备让电脑和手机连入同一网络的条件，当前电脑连接的是手机热点，该方法是通过usb调试将手机上的8888端口映射到电脑上的8888端口，然后电脑使用fiddle进行抓包
 
@@ -38,7 +40,7 @@ adb shell settings put global http_proxy :0
 adb shell settings put global https_proxy :0
 ```
 
-## 使用脚本快速过滤某一进程的日志
+### 使用脚本快速过滤某一进程的日志
 
 环境：windows下使用wsl去执行bash脚本，adb工具在windows下安装
 
