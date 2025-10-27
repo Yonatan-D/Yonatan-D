@@ -22,6 +22,7 @@
   - Multipass
     - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
   - UOS
+    - [问题解决](/notes/tools/uos/uos-faq)
     - [软件安装问题](/notes/tools/uos/uos-software)
   - WSL
     - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)

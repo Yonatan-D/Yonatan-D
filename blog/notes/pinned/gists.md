@@ -68,21 +68,3 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 # 查看路由表
 route print
 ```
-
-## 下载离线安装包及依赖
-
--d 仅下载，不安装
-
-```bash
-sudo apt clean
-sudo apt install -d -y com.alipay.devtools.deepin
-
-mkdir alipayDevtools
-cp /var/cache/apt/archives/*.deb alipayDevtools
-```
-
-拷贝到离线机上，执行安装命令：
-
-```bash
-sudo dpkg -i alipayDevtools/*.deb
-```

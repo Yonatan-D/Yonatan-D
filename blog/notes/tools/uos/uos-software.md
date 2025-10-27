@@ -30,7 +30,7 @@ https://github.com/msojocs/wechat-web-devtools-linux
 
 ## 支付宝：小程序开发者工具
 
-应用商店能搜到wine版本，离线安装看这篇 [《下载离线安装包及依赖》](/notes/network/network-offline?id=下载离线安装包及依赖)
+应用商店能搜到wine版本，离线安装看这篇 [《下载离线安装包及依赖》](/notes/tools/uos/uos-faq?id=下载离线安装包及依赖)
 
 ### 1 降版本
 
