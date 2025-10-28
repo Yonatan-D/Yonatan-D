@@ -28,7 +28,7 @@ curl -fsSL https://code-server.dev/install.sh | sh
 
 网上找到的教程均是 `pacman -Sy visual-studio-code-bin`，但我这报错找不到包，我察觉到可能是社区更新了，尝试了换源、添加 archlinuxcn 源也不能解决。后面用 `pacman -Ss vscode` 检索，发现包名应该是 `code`，正确的安装命令是：
 
-```terminal
+```sh
 $|pacman -Sy code
 ```
 
@@ -89,13 +89,13 @@ To run as root, you must specify an alternate user data directory with the --use
 
 下面这条命令可以确认是否连接上设备，unauthorized 意味着未连接，device 即连接成功
 
-```terminal
+```sh
 $|./adb.exe devices
 ```
 
 3. 在 platform-tools 目录内打开 cmd，执行以下命令
 
-```terminal
+```sh
 $|./adb.exe shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"
 ```
 

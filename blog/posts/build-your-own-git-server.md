@@ -35,7 +35,7 @@ gitlab-ce-zh (第三方汉化 docker 镜像)：https://github.com/twang2218/gitl
 
 ### 使用 Docker 命令启动
 
-```terminal
+```sh
 $|docker run -d \
     --name gitlab \
     --restart always \
@@ -160,7 +160,7 @@ docker-compose down
 
 使用 gitlab-rake 备份数据：
 
-```terminal
+```sh
 $|gitlab-rake gitlab:backup:create
 ```
 
@@ -180,7 +180,7 @@ $|gitlab-rake gitlab:backup:create
 
 恢复备份前，先停止 gitlab 服务：
 
-```terminal
+```sh
 $|gitlab-ctl stop
 ```
 
@@ -188,7 +188,7 @@ $|gitlab-ctl stop
 
 举例，备份文件名称为 1597188417_2020_08_11_12.10.5_gitlab_backup.tar，则不需要加上后缀： _gitlab_backup.tar。执行的恢复命令，如下所示：
 
-```terminal
+```sh
 $|gitlab-rake gitlab:backup:restore BACKUP=1597188417_2020_08_11_12.10.5
 ```
 
