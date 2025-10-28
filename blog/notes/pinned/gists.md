@@ -6,6 +6,12 @@
 ps -ef | grep 程序名 | awk '{print $2}' | xargs kill -9
 ```
 
+## windows 结束指定程序名的所有进程
+
+```cmd
+taskkill /f /im 程序名.exe
+```
+
 ## 查看当前目录下所有文件大小并排序
 
 ```bash
@@ -55,6 +61,21 @@ bindkey "\e\e" sudo-command-line
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime
 ```
 
+## 查看 Windows 端口使用
+
+```cmd
+netstat -ano|findstr "10050"
+```
+
+## windows禁ping
+
+```cmd
+# 允许被ping
+netsh firewall set icmpsetting 8
+# 禁止被ping
+netsh firewall set icmpsetting 8 disable
+```
+
 ## windows 双网卡路由配置
 
 目的：实现同时内外网访问
@@ -79,6 +100,12 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 
 # 查看路由表
 route print
+```
+
+## windows快速删除node_modules
+
+```cmd
+FOR /d /r . %d in (node_modules) DO @IF EXIST "%d" rm -rf "%d"
 ```
 
 ## 添加 Typora 到右键
@@ -106,6 +133,24 @@ rem .REG 的写法
 rem Windows Registry Editor Version 5.00
 rem [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU] "MRUList"=-
 ```
+
+## 为什么 eggjs 启动命令要加 --workers
+
+docker容器内跑eggjs工程启动报错：首先，启动命令不指定workers线程数的话，会默认创建和CPU核数相当的线程数，这是前提。又因为，docker容器本身的限制（额外提下，Docke容器使用主机CPU资源是不受限制的。作者说，Node&&Docker的BUG，os.cpus()无法识别在docker里正确的核数），所以就冲突了。容器化的egg最好直接指定worker进程数量（小一点的数，比如2），另外真实机器建议worker数和CPU核数一致。
+
+[github.com/eggjs/egg/issues/3088]
+
+## 可视化大屏的数据对接
+
+> 来源：https://zhuanlan.zhihu.com/p/345634389
+
+数据大屏接入数据的方式主要有：API接口、数据库、静态文件
+
+API接口：在没有直接可复用接口时，不要偷懒，在前端同时对返回做大量数据的聚合操作，不仅会导致大屏响应变慢，而且也不容易保证数据的准确性。
+
+数据库：数据可靠性和返回延时，查询sql的质量很重要，也会导致大屏响应缓慢甚至组件报错。
+
+静态文件：在客户没有能力开发接口，也没有现有的数据库时，这时只能采用静态文件的形式作为大屏的数据来源。一般会采用csv格式（或者excel？）的文件，用户上传的每一个csv文件相当于数据库的一张表，需要根据大屏内容为每个csv文件设计合理的字段。
 
 ## 加签和加密的区别
 

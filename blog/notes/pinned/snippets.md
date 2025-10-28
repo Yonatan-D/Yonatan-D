@@ -31,6 +31,36 @@ function wxProxy(wx) {
 
 更多用法（解决加载过程中loading重复刷新、路由跳转拦截）：https://github.com/Yonatan-D/wechat-snippets
 
+## egg controller 入参改造
+
+[egg-router-plus](https://github.com/eggjs/egg-router-plus/blob/master/lib/router.js)
+
+```js
+const apiController = new Proxy(call_fn, {
+  apply(targetFn, ctx) {
+    const callArgs1 = { ...ctx.query, ...ctx.request.body, ...ctx.params };
+    const callArgs2 = { ctx };
+    return Reflect.apply(targetFn, ctx, [callArgs1, callArgs2])
+      .then(res => {
+        if (!ctx.body) ctx.body = res;
+      }, fail => {
+        throw fail;
+      })
+  }
+})
+
+// 使用示例：
+async queryOrderInfo({ orderId }, { ctx }) {
+  const { workOrderNumbers = [] } = ctx.User;
+  let err = null;
+  if (!workOrderNumbers.includes(orderId)) {
+    err = '无权限查看订单信息';
+  }
+  const data = await ctx.service.work.queryOrderInfo(orderId);
+  return [err, data];
+}
+```
+
 ## 批量 require 目录下的 *.Controller.js 文件
 
 ```js

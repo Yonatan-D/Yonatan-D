@@ -182,3 +182,79 @@ git revert HEAD
 git revert -m 1 <commit_id>
 ```
 
+## Git 工作流程
+
+一个 master，多个 feature 分支，如何有序合并和提交
+
+去自己的工作分支
+`$ git checkout work`
+
+工作
+`....`
+
+提交工作分支的修改
+`$ git commit -a`
+
+回到主分支
+`$ git checkout master`
+
+获取远程最新的修改，此时不会产生冲突
+`$ git pull`
+
+回到工作分支
+`$ git checkout work`
+
+用rebase合并主干的修改，如果有冲突在此时解决
+`$ git rebase master`
+
+回到主分支
+`$ git checkout master`
+
+合并工作分支的修改，此时不会产生冲突。
+`$ git merge work`
+
+提交到远程主干
+`$ git push`
+
+这样做的好处是，远程主干上的历史永远是线性的。每个人在本地分支解决冲突，不会在主干上产生冲突。
+
+
+
+简而言之
+
+master  -- rebase -->  feature
+
+master  <-- merge --  feature
+
+重中之重
+
+不管哪个分支，push 上去前一定要先 pull
+
+画一张更详细的流程图
+
+## FAQ
+
+### 从 GitHub 上拉取项目中的指定目录
+
+推荐安装 TortoiseSVN 工具
+
+打开 GitHub 仓库的指定目录，拷贝浏览器地址栏，将 /tree/master 替换成 /trunk
+
+### 添加进.gitignore前已推送文件怎么移除
+
+解决方法就是先把本地缓存删除（改变成未track状态），然后再提交
+
+```sh
+git rm --cached 文件名
+git commit -m 'update .gitignore'
+```
+
+### 删除.git中大文件
+
+```sh
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch 文件名' --prune-empty --tag-name-filter cat -- --all
+```
+
+删除的过程会很漫长，实现原理是遍历一遍项目的 git 树，从每一个节点中去搜索你输入的文件名，找到有就删掉。执行完成后，本地 .git 里面还需要清理和回收空间，最快捷的办法是删掉本地项目，重新克隆。
+
+参考：https://www.hollischuang.com/archives/1708

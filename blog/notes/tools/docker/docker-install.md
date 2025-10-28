@@ -168,6 +168,12 @@ docker load < myubuntu.tar
 docker run -dt --name=容器名称 --restart=always -p 主机(宿主)端口:容器端口 镜像名称:版本号
 ```
 
+-v 宿主机目录:容器目录
+
+* 如果host机器上的目录不存在，docker会自动创建该目录
+* 如果container中的目录不存在，docker会自动创建该目录
+* 如果container中的目录已经有内容，那么docker会使用host上的目录将其覆盖掉
+
 ### 进入容器
 
 ```bash
@@ -205,3 +211,15 @@ docker import ubuntu-15adabd78f9b.tar
 
 export 不会保留镜像的层级信息，所以大小会比 save 小
 
+### 查询cpu和内存占用
+
+```sh
+docker stats --no-stream | sort -rn -k 3
+```
+
+--format格式化成表格或JSON
+
+```sh
+docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
+docker stats --no-stream --format "{\"name\":\"{{.Name}}\",\"cpu\":\"{{.CPUPerc}}\",\"mem\":\"{{.MemUsage}}\"}"
+```

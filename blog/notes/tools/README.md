@@ -22,14 +22,13 @@ markmap:
     - [白名单 (iptables)](/notes/tools/docker/docker-network)
     - [清理占用](/notes/tools/docker/docker-clean)
     - [常见问题](/notes/tools/docker/docker-faq)
-  - Git
-    - [基本操作](/notes/tools/git/git-cmd)
-    - [工作流程](/notes/tools/git/git-flow)
+  - [Git](/notes/tools/git)
   - GitLab
     - [安装使用](/notes/tools/gitlab/gitlab-install)
     - [Pages](/notes/tools/gitlab/gitlab-pages)
     - [Runner](/notes/tools/gitlab/gitlab-runner)
     - [CI](/notes/tools/gitlab/gitlab-ci)
+  - [Grafana](/notes/tools/grafana)
   - Multipass
     - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
   - [Nginx](/notes/tools/nginx/faq)
@@ -39,4 +38,5 @@ markmap:
     - [软件安装问题](/notes/tools/uos/uos-software)
   - WSL
     - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)
+  - [Zabbix](/notes/tools/zabbix)
 ```

@@ -1,3 +1,36 @@
+## nginx配置访问密码
+
+```nginx
+auth_basic "输入使用密码";
+auth_basic_user_file /usr/local/nginx/conf/htpasswd;
+```
+
+
+
+## 禁用缓存
+
+```nginx
+add_header Cache-Control "no-cache, no-store"
+```
+
+在线生成工具：https://tool.oschina.net/htpasswd
+
+本地生成密码：
+
+```sh
+# centos: yum install httpd-tools
+# unbutun: apt-get install httpd 提示选择一个(只测试过选择apache2可用)apt-get install apache2
+htpasswd -c [source] username
+New password:
+Re-type new password:
+Adding password for user coderschool
+
+# htpasswd文件长这样：
+# username:password 可添加多个
+# username:password:comment
+# 例如：admin:$apr1$ubbz6W1b$QmPKpJmUEEBZuVxtc5c.G1 <- 使用htpasswd生成的
+```
+
 ## nginx 搭建下载服务器
 
 ```nginx

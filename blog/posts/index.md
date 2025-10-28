@@ -20,4 +20,4 @@
 
 * 2023-05-31 [nginx try_files 可以实现先找服务 A，找不到再继续找服务 B](./posts/nginx-try_files-allows-to-find-a-first-and-then-b)
 
-* 2023-05-15 [内网服务器搭建 GitLab 代码仓库](./posts/build-your-own-git-server)
+* 2023-05-15 [内网服务器搭建 GitLab 代码仓库](./posts/deploy-your-own-git-server)

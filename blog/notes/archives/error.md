@@ -1,5 +1,60 @@
 # 报错解决
 
+## sequelize 连接 mssql 报错：ERROR: Server requires encryption, set 'encrypt' config option to true.
+
+原因：SQL Azure与SQL Server有区别。sequelize的mssql支持连接azure（因为azure本身就是基于sql server的），但是要加上这个配置：
+
+https://github.com/sequelize/sequelize/issues/3240
+
+解决方法：https://stackoverflow.com/questions/56113296/set-encrypt-to-true-on-sequelize-cli-migrate-for-mssql
+
+```js
+module.exports = {
+  development: {
+    username: "USER",
+    password: "PASSWORD",
+    database: "DB_NAME",
+    host: "HOST.net",
+    dialect: 'mssql',
+    dialectOptions: {  // 加上这段
+      options: {
+        encrypt: true
+      }
+    }
+  } 
+};
+```
+
+## wss（white shark system）白屏解决
+
+参考：https://blog.csdn.net/xiang1009/article/details/102784625
+
+1.安装64位wamp，页面空白，选择PHP->version->5.x版本
+
+2.局域网访问，入站规则添加80端口，修改apache的httpd-vhosts.conf，将Require local改为Require all granted。
+
+3.单击wamp运行图标，选择MySQL的my.ini，修改其中的sql-mode
+
+将STRICT_ALL_TABLES改为STRICT_TRANS_TABLES
+
+将NO_ZERO_DATE和NO_ZERO_IN_DATE删除
+
+保存后，重启即可解决
+
+## linux 开机错误 Entering emergency mode. Exit the shell to continue.
+
+https://blog.csdn.net/whatday/article/details/104819743
+
+输入 journalctl 可以查看系统的日志信息
+
+解决方法：
+
+```sh
+xfs_repair -v -L /dev/dm-0
+
+-L 选项指定强制日志清零，强制xfs_repair将日志归零，即使它包含脏数据（元数据更改）。
+```
+
 ## redis 安装报错 jemalloc/jemalloc.h: No such file or directory
 
 首先编译 Redis 需要先安装 gcc-c++

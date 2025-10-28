@@ -1,3 +1,14 @@
+## mysql表结构死锁
+
+```mysql
+# 查看 status 列有没有 lock 字眼
+show processlist;
+kill [id]
+# 查看正在运行的事务
+SELECT * FROM information_schema.INNODB_TRX;
+kill [id]
+```
+
 ## node 连接 oracle
 
 环境需要
