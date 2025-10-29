@@ -1,5 +1,5 @@
-> Hey, I am Yonatan, a full stack developer. Focuses on JavaScript.  
-> Outside of programming, I enjoy watching anime and movie.  
+> Hey, I am Yonatan, a full-stack developer in the making. I love web.  
+> When I'm not programming, I enjoy watching anime and movies.  
 > 打杂工程师，热衷于折腾，探索与分享是一段愉悦的旅程。  
 > 工作之余，喜欢看动画和电影。  
 * <Icon class="icon-email"></Icon><a href="mailto:yonatan.lin@outlook.com" target="_blank">yonatan.lin@outlook.com</a>
