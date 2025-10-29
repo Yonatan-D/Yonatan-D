@@ -26,7 +26,7 @@ Yonatan 取自名字谐音，自诩是全栈开发者，实际是一个爱折腾
 
 <br/>
 
-本站是基于 Docsify 在 Vue 主题的基础上拓展的。
+本站是基于 Docsify 的 Vue 主题拓展的。
 
 ```html
 <!-- custom plugins -->
