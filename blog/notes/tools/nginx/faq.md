@@ -1,11 +1,15 @@
+## Nginx报错(400) “The plain HTTP request was sent to HTTPS port“
+
+```nginx
+proxy_redirect http:// https://;
+```
+
 ## nginx配置访问密码
 
 ```nginx
 auth_basic "输入使用密码";
 auth_basic_user_file /usr/local/nginx/conf/htpasswd;
 ```
-
-
 
 ## 禁用缓存
 

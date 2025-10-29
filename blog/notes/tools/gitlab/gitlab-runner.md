@@ -75,3 +75,12 @@ root 账号打开 Runners 管理页面(http://192.168.0.1:8880/admin/runners) �
 ```bash
 ./gitlab-runner.exe register --non-interactive --executor 'shell' --url 'http://192.168.0.1:8880' --registration-token 'your_registration_token
 ```
+
+## gitlab-runner 在 dind 方式下使用缓存
+
+```toml
+[runners.docker]
+  volumes = ["/cache","/run/docker.sock:/run/docker.sock"]
+```
+
+参考：https://segmentfault.com/q/1010000022379261

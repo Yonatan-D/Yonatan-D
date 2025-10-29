@@ -1,5 +1,64 @@
 # 报错解决
 
+## 项目报错找不到name，原因是浏览器版本低
+
+浏览器不支持 `Import maps` ：这个提案允许控制 js 的 `import` 语句或者 `import()` 表达式获取的库的url，并允许在非导入上下文中重用这个映射。
+
+浏览器支持情况：https://caniuse.com/?search=importMap
+
+```js
+import moment from "moment";
+import { partition } from "lodash";
+
+<script type="importmap">
+{
+  "imports": {
+    "moment": "/node_modules/moment/src/moment.js",
+    "lodash": "/node_modules/lodash-es/lodash.js"
+  }
+}
+</script>
+
+// 解析成：
+import moment from "/node_modules/moment/src/moment.js";
+import { partition } from "/node_modules/lodash-es/lodash.js";
+```
+
+> 相关阅读：  
+> [从systemjs的使用学习js模块化](https://segmentfault.com/a/1190000022278429)
+
+## supervisorctl start app 遇到错误：ERROR (spawn error)
+
+```sh
+# 使用命令查看错误信息：
+supervisorctl tail program_name stderr
+
+# 错误原因是：
+# /etc/supervisord.conf
+[program:app]
+command=node ~/yd-supervisord/app.js  #错误：不能用 ~ 字符
+command=node /yd-supervisord/app.js   #正确
+```
+
+## CSS布局遇到：start value has mixed support, consider using flex-start instead
+
+flex 属性写法不规范。start 值在不同浏览器中的支持情况不一致，使用 flex-start 在所有支持 Flexbox 的浏览器中都能正常工作
+
+```css
+.justify-start {
+   display: flex;
+   justify-content: flex-start; /* 替代 start */
+}
+```
+
+## history模式，部署后地址栏访问无效，刷新后404
+
+```nginx
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
+
 ## sequelize 连接 mssql 报错：ERROR: Server requires encryption, set 'encrypt' config option to true.
 
 原因：SQL Azure与SQL Server有区别。sequelize的mssql支持连接azure（因为azure本身就是基于sql server的），但是要加上这个配置：
@@ -54,6 +113,12 @@ xfs_repair -v -L /dev/dm-0
 
 -L 选项指定强制日志清零，强制xfs_repair将日志归零，即使它包含脏数据（元数据更改）。
 ```
+
+## nginx 因 referer 头导致 403
+
+a标签：referrerpolicy="no-referrer" （A标签页面跳转是403，回车后正常问题）
+
+nginx：valid_referers none blocked 域名或IP; （添加白名单）
 
 ## redis 安装报错 jemalloc/jemalloc.h: No such file or directory
 

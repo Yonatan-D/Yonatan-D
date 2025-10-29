@@ -1,3 +1,54 @@
+## 快速备份还原mysql
+
+mysqldump
+
+```mysql
+mysqldump --default-character-set=utf8mb4 --host=192.168.14.229 -uroot -p123456 --opt fxdemo | mysql --host=localhost -uroot -p123456 --default-character-set=utf8mb4 -C newfxdemo
+```
+
+继上，大数据量导出优化
+
+先通过下面的语句查询出两个值
+
+```mysql
+show variables like 'max_allowed_packet';
+show variables like 'net_buffer_length';
+```
+
+给 sql 语句后面带上两个参数
+
+```mysql
+--max_allowed_packet=67108864 --net_buffer_length=16384
+```
+
+第三方工具 OBDB2DB：https://www.cnblogs.com/overblue/p/4636367.html
+
+## MySQL理论内存消耗计算
+
+在线计算工具 http://www.mysqlcalculator.com/
+
+```mysql
+global级共享内存:
+
+show variables where variable_name in (
+'innodb_buffer_pool_size','innodb_log_buffer_size','innodb_additional_mem_pool_size','query_cache_size'
+);
+
+session级私有内存:
+
+show variables where variable_name in (
+'tmp_table_size','sort_buffer_size','read_buffer_size','read_rnd_buffer_size','join_buffer_size','thread_stack', 'binlog_cache_size'
+);
+
+计算公式：
+key_buffer_size + query_cache_size + tmp_table_size + innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size
++ max_connections * (
+sort_buffer_size + read_buffer_size + read_rnd_buffer_size + join_buffer_size + thread_stack + binlog_cache_size
+)
+```
+
+> [阅读原文](https://cloud.tencent.com/developer/article/1536662#:~:text=%E4%B8%BA%E4%BB%80%E4%B9%88MySQL%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E8%BF%99%E4%B9%88%E5%A4%A7%EF%BC%9F%20for%20InnoDB%20MySQL,%E7%9A%84%E5%86%85%E5%AD%98%E6%B6%88%E8%80%97%EF%BC%8C%E4%B8%80%E8%88%AC%E6%9D%A5%E8%AF%B4%E5%8C%85%E5%90%AB%E4%B8%A4%E7%A7%8D%E5%86%85%E5%AD%98%E3%80%82%20%E8%BF%99%E6%98%AF%20Innodb%20%E5%BC%95%E6%93%8E%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E7%BC%93%E5%AD%98%EF%BC%8C%E4%B9%9F%E6%98%AF%E6%8F%90%E5%8D%87%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E7%9A%84%E9%87%8D%E8%A6%81%E6%89%8B%E6%AE%B5%E3%80%82%20%E4%B8%80%E8%88%AC%E6%98%AFglobal%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E4%B8%AD%E5%8D%A0%E7%94%A8%E6%9C%80%E5%A4%A7%E7%9A%84%E9%83%A8%E5%88%86%E3%80%82)
+
 ## mysql表结构死锁
 
 ```mysql

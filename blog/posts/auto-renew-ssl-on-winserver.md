@@ -44,9 +44,9 @@ $AliSecretInsecure = '阿里云 AccessKey Secret'
 利用 `release.ps1` 脚本把生成的证书复制到别处并重命名：
 
 ```powershell
-copy-item .\exportssl\_.cloudscape.net.cn-chain.pem .\SSL\fullchain.crt
-copy-item .\exportssl\_.cloudscape.net.cn-key.pem .\SSL\private.pem
-copy-item .\exportssl\_.cloudscape.net.cn.pfx .\SSL\certificate.pfx
+copy-item .\exportssl\_.yonatan.cn-chain.pem .\SSL\fullchain.crt
+copy-item .\exportssl\_.yonatan.cn-key.pem .\SSL\private.pem
+copy-item .\exportssl\_.yonatan.cn.pfx .\SSL\certificate.pfx
 ```
 
 
@@ -57,7 +57,7 @@ copy-item .\exportssl\_.cloudscape.net.cn.pfx .\SSL\certificate.pfx
 
 - **M** (Create certificate (full options))
 - 选择 **2** (Manual input)
-- A host name to get a certificate for. This may be a comma-separated list. Host: ***.cloudscape.net.cn (输入你的域名)**
+- A host name to get a certificate for. This may be a comma-separated list. Host: ***.yonatan.cn (输入你的域名)**
 - Friendly name '[Manual] 刚刚输入的域名'. <Enter> to accept or type desired name: **<直接回车>**
 - 选择 **8** ([dns-01] Create verification records with your own script)
 - Path to script that creates the validation TXT record.  DnsCreateScript: **.\dnsapi_ali.ps1 (阿里云 DNS 自动验证脚本)**
@@ -73,9 +73,9 @@ copy-item .\exportssl\_.cloudscape.net.cn.pfx .\SSL\certificate.pfx
 - 选择 **3** (PFX archive)
 - Path to write the .pfx file to. File path: **.\exportssl (导出的目录)**
 - Password to set for .pfx files exported to the folder. Choose from the menu: **2** (Type/paste in console) **这里选择设置 pfx 导入密码（东方通：转成 jks 需要密码）**
-- PfxPassword: **skyland (输入你的密码)**
+- PfxPassword: **yonatan (输入你的密码)**
 - Save to vault for future reuse? (y/n*)  **y (保存密码以便下次快速使用)** 
-- Please provide a unique name to reference this secret: **sky (给密码取个唯一名称)** 
+- Please provide a unique name to reference this secret: **yont (给密码取个唯一名称)** 
 - ==== 现在可以选择 **5** (No (additional) store steps)  退出了 ====
 - Which installation step should run first?: **2: Start external script or program** (选择导出后执行的脚本，没有则选3)
 - 输入脚本路径： **.\release.ps1** ，直接回车（不用输入Parameters）

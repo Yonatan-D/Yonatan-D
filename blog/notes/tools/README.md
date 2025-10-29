@@ -32,7 +32,10 @@ markmap:
   - Multipass
     - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
   - [Nginx](/notes/tools/nginx/faq)
-  - [Redis](/notes/tools/redis/benchmark)
+  - Redis
+    - [benchmark](/notes/tools/redis/benchmark)
+    - [FAQ](/notes/tools/redis/faq)
+  - [Supervisor](/notes/tools/supervisor)
   - UOS
     - [问题解决](/notes/tools/uos/uos-faq)
     - [软件安装问题](/notes/tools/uos/uos-software)

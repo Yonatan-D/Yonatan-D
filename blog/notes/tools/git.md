@@ -258,3 +258,17 @@ git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch 文�
 删除的过程会很漫长，实现原理是遍历一遍项目的 git 树，从每一个节点中去搜索你输入的文件名，找到有就删掉。执行完成后，本地 .git 里面还需要清理和回收空间，最快捷的办法是删掉本地项目，重新克隆。
 
 参考：https://www.hollischuang.com/archives/1708
+
+### git 修改文件权限
+
+linux 添加可执行权限后直接commit, push
+
+windows 需要git命令修改
+
+```cmd
+git update-index --chmod=+x build.sh
+git commit -am "添加build.sh可执行权限"
+
+# 查看文件权限
+git ls-tree HEAD .
+```

@@ -61,6 +61,22 @@ bindkey "\e\e" sudo-command-line
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime
 ```
 
+## nmap
+
+```sh
+# 获取主机版本信息
+nmap -sV 172.16.0.1
+
+# 获取主机操作系统信息
+nmap -O 172.16.0.1
+```
+
+## 查看系统是32位还是64位
+
+```bash
+getconf LONG_BIT
+```
+
 ## 查看 Windows 端口使用
 
 ```cmd
@@ -102,10 +118,52 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 route print
 ```
 
-## windows快速删除node_modules
+## js 清空数组
 
-```cmd
-FOR /d /r . %d in (node_modules) DO @IF EXIST "%d" rm -rf "%d"
+看到一处注释，“**千万不要**在布局函数里面对routes进行重新赋值，如`routes=[]`，但是你可以使用`routes.length=0`来清空路由数组，然后重新添加路由对象到数组里，总之，不要改变routes对象的指针指向。”
+
+引起了我的思考。以往也在别的文章看过 arr.length = 0 的操作，这个操作好吗？
+
+有非常多的方法来清空一个已经存在的数组：
+
+```js
+var arr = [1,2,3,4];
+```
+
+**方法1： 直接赋值**
+
+```js
+arr = [];
+```
+
+将空数组直接赋值给变量 arr，新数组与原无引用关系。对新数组的操作不会影响原数组。性能最快，但改变了引用。
+
+**方法2： 设置 length**
+
+```js
+arr.length = 0
+```
+
+直接将数组长度设置为0，速度次之。当"strict mode"严格模式时，因 arr.length 是只读的，此方法将不起作用。
+
+**方法3： splice**
+
+```js
+arr.splice(0, arr.length)
+```
+
+这种方法会返回删除的所有元素，并形一个新的数组，保持对数组的引用。性能最慢。
+
+也有其它诸如 pop 方法循环删除，但开发无银弹，根据具体场景选择合适的方法。
+
+## 快速删除node_modules
+
+```sh
+# linux
+rm -rf node_modules
+
+# windows
+rd /s /q node_modules
 ```
 
 ## 添加 Typora 到右键
@@ -134,11 +192,22 @@ rem Windows Registry Editor Version 5.00
 rem [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU] "MRUList"=-
 ```
 
+## Vue组件重绘，唯一key的用法 
+
+通过 `:key="key"` 实现，原理看[官方文档](https://cn.vuejs.org/api/built-in-special-attributes.html#key)。所以当 key 值变更时，会触发重新渲染。以前我的做法是通过watch监听数据变更。
+
+## 摄像枪RTSP地址规则
+
+> [海康摄像机、NVR、流媒体服务器、回放取流RTSP地址规则说明
+](https://www.cnblogs.com/elesos/p/9881690.html)
+> 
+> [海康、大华网络摄像机RTSP URL格式组成及参数配置](https://zhuanlan.zhihu.com/p/53548980)
+
 ## 为什么 eggjs 启动命令要加 --workers
 
 docker容器内跑eggjs工程启动报错：首先，启动命令不指定workers线程数的话，会默认创建和CPU核数相当的线程数，这是前提。又因为，docker容器本身的限制（额外提下，Docke容器使用主机CPU资源是不受限制的。作者说，Node&&Docker的BUG，os.cpus()无法识别在docker里正确的核数），所以就冲突了。容器化的egg最好直接指定worker进程数量（小一点的数，比如2），另外真实机器建议worker数和CPU核数一致。
 
-[github.com/eggjs/egg/issues/3088]
+https://github.com/eggjs/egg/issues/3088
 
 ## 可视化大屏的数据对接
 
