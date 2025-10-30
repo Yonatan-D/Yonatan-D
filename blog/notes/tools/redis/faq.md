@@ -1,3 +1,52 @@
+## 在 docker arm 容器内编译 redis 踩坑记录
+
+### 第①个：lower value of 128
+
+详细：WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+
+- 警告描述：不能设置tcp的堆积为511，因为/proc/sys/net/core/somaxconn的值为128太低。
+- 解决方法
+
+```sh
+#在/etc/sysctl.conf中添加如下
+net.core.somaxconn = 2048
+#然后在终端中执行
+sysctl -p
+
+#或者一行命令,等号左右不能有空格
+sysctl -w net.core.somaxconn=2048
+```
+
+行不通，报错：`sysctl: setting key "net.core.somaxconn": Read-only file system`
+
+解决：
+
+docker run 时使用 -sysctl net.core.somaxconn=1024
+
+或者创建容器时, 加上--privileged即可
+
+### 第②个：overcommit_memory is set to 0! 
+
+详细：WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+> 警告 overcommit_memory 设置为 0！ 在内存不足的情况下，后台保存可能会失败。
+> https://blog.csdn.net/m0_62089210/article/details/127004090
+
+修改 /etc/sysctl.conf
+
+```bash
+sysctl -w vm.overcommit_memory=1
+```
+
+### 第③个： ignore-warnings ARM64-COW-BUG
+
+Redis启动失败报错：Redis will now exit to prevent data corruption. Note that it is possible to suppress this warning by setting the following config: ignore-warnings ARM64-COW-BUG
+
+**报错提示的是内核不对**, 可能无法正常保存redis的数据
+
+解决：根据提示在配置文件redis.conf 添加取消这最后一条注释： ignore-warnings ARM64-COW-BUG
+
+
+
 ## Redis: 查看占用内存
 
 ```bash

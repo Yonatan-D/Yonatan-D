@@ -36,9 +36,11 @@ markmap:
     - [benchmark](/notes/tools/redis/benchmark)
     - [FAQ](/notes/tools/redis/faq)
   - [Supervisor](/notes/tools/supervisor)
-  - UOS
-    - [问题解决](/notes/tools/uos/uos-faq)
-    - [软件安装问题](/notes/tools/uos/uos-software)
+  - OS
+    - [CentOS](/notes/tools/os/centos)
+    - UOS
+      - [问题解决](/notes/tools/os/uos/uos-faq)
+      - [软件安装问题](/notes/tools/os/uos/uos-software)
   - WSL
     - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)
   - [Zabbix](/notes/tools/zabbix)

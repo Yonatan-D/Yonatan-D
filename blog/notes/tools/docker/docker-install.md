@@ -211,6 +211,22 @@ docker import ubuntu-15adabd78f9b.tar
 
 export 不会保留镜像的层级信息，所以大小会比 save 小
 
+### 日志排查
+
+```bash
+docker logs xxx --tail 500
+
+docker inspect xxx
+tail -n 100 /var/lib/docker/containers/xxx/xxx-json.log
+```
+
+### 进程排查
+
+```bash
+docker stats --no-stream | sort -rn -k 3
+docker exec -it xxx ps -aux
+```
+
 ### 查询cpu和内存占用
 
 ```sh

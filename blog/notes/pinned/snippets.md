@@ -186,3 +186,9 @@ const imageIsExist = (url) => {
   }
 </script>
 ```
+
+## js 首字母大写
+
+```js
+const firstUpperCase = ([first, ...rest]) => first?.toUpperCase() + rest.join('');
+```

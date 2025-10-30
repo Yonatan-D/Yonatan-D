@@ -1,3 +1,44 @@
+## nginx阻止xss和csrf攻击
+
+XSS攻击
+
+```nginx
+# 缺少“X-Content-Type-Options”响应头
+add_header X-Content-Type-Options: nosniff;
+# 缺少“X-XSS-Protection”响应头
+add_header X-XSS-Protection "1; mode=block";
+# 缺少“Content-Security-Policy”响应头
+add_header Content-Security-Policy: default-src 'self'
+```
+
+CSRF攻击：配置referer
+
+```nginx
+// 合法的referer,所有来自 yonatan.cn 域名和包含google,baidu的站点
+valid_referers none blocked *.yonatan.cn server_names ~\.google\. ~/.baidu\. ;
+
+// 不合法的直接返回403
+if ($invalid_referer) {
+     return 403;
+}
+
+location ^~ /api {
+    ...
+}
+```
+
+## SSL 服务器缺少中间证书
+
+检测：https://myssl.com/ssl.html
+
+证书修复：https://myssl.com/chain_download.html
+
+> 参考：
+> 
+> [微信小程序真机测试 Provisional headers are shown 问题解决办法](https://blog.csdn.net/beiaidefeng/article/details/107159988)
+> 
+> [Nginx 配 Let's Encrypt HTTPS 证书 报 错误： 服务器缺少中间证书 问题解决](https://leanote.zzzmh.cn/blog/post/admin/Nginx-Let-s-Encrypt%E8%AF%81%E4%B9%A6-%E6%8A%A5%E9%94%99%E8%AF%AF-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%BA%E5%B0%91%E4%B8%AD%E9%97%B4%E8%AF%81%E4%B9%A6-%E8%A7%A3%E5%86%B3)
+
 ## Nginx报错(400) “The plain HTTP request was sent to HTTPS port“
 
 ```nginx

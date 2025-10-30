@@ -1,5 +1,76 @@
 # 报错解决
 
+## eggjs 站点通过 nginx 无法访问，而直连可以访问
+
+该服务在 nginx 上做了负载均衡，单独访问每个节点都可以访问，但通过 nginx 访问时，偶发性无法访问。
+
+处理请求业务是由 egg.js 的 agent 进行分发，随机发送给其中一个 worker ，而有一个 worker 进程陷入死循环，如果分配给它，请求并不会执行，会处于等待状态，直到超时，也就显示 nginx 的超时错误。没有分配给有问题的 worker 的话，能正常执行请求业务。
+
+————————————————
+
+为什么站点日志没有错误日志输出？
+
+该错误是通过 `console.error()` 进行输出的，可能是日志级别配置导致不存在日志文件里面。因为是用 docker 部署的，docker 日志捕获到了这次错误
+
+————————————————
+
+为什么内存会缓慢下降
+
+这是因为进程陷入死循环，在不停的执行，没有得到资源释放，在V8的垃圾回收机制中没有被回收。并且分配给这个 `worker` 的请求，会因为阻塞而无法得到释放，就会慢慢的消耗内存，只有重启才能恢复正常。
+
+## Docker和Firewalld冲突
+
+内网有两个网段 172.17 和 192.168，网络防火墙已允许 172.17.10.90 主机被 192.168.0.130 主机访问，但如今 ping 不通，telnet 也不通，原因是 Docker 网段和内网主机网段冲突了。解决方法：[`bip : 设置 docker 网桥的 IP 地址段，默认是 172.17.0.1/16。避免和内网服务器 IP 地址冲突`](/notes/tools/docker/docker-daemon)
+
+当时的踩坑记录：
+
+首先想的是设置主机防火墙。放行 172.17.10.90
+
+```bash
+# 临时的，重启会失效
+route add -net 172.17.10.90 netmask 255.255.255.255 gw 192.168.0.1
+# 永久生效
+vim /etc/sysconfig/static-routes
+any net 172.17.10.90 netmask 255.255.255.255 gw 192.168.0.1
+```
+
+此时已经能 ping 通，继续放行端口
+
+```bash
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --list-ports
+firewall-cmd --reload
+```
+
+能通了，但过会又不行了，时灵时不灵。重启防火墙只能维持正常一段时间
+
+```bash
+systemctl restart firewall
+```
+
+这时候猜到了可能又是 docker 在捣鬼了，docker 的端口映射也是基于 iptables，我用 iptables 开的端口，给冲突了，看一下防火墙日志：
+
+```bash
+systemctl status firewalld
+```
+
+果然，docker 出现在了日志。这也能解释上面我在执行 `firewall-cmd --list-ports` 时消失了几个原有的端口。
+
+关闭 130 主机上的防火墙，问题解决
+
+```bash
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
+~~将 firewalld 换成 iptables~~ 
+
+```sh
+-A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
+```
+
+后记：这是 Docker 网段和内网主机网段冲突导致的，应该配置 bip 设置别的网段。
+
 ## 项目报错找不到name，原因是浏览器版本低
 
 浏览器不支持 `Import maps` ：这个提案允许控制 js 的 `import` 语句或者 `import()` 表达式获取的库的url，并允许在非导入上下文中重用这个映射。
