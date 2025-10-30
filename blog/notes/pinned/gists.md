@@ -12,6 +12,14 @@ ps -ef | grep 程序名 | awk '{print $2}' | xargs kill -9
 taskkill /f /im 程序名.exe
 ```
 
+## Github520 - fetch_github_hosts
+
+```bat
+powershell -Command "& { $remote='https://raw.hellogithub.com/hosts'; $hostsPath='%SystemRoot%\System32\drivers\etc\hosts'; $reader=[System.IO.StreamReader]::new($hostsPath, $true); $hostsContent=$reader.ReadToEnd(); $encoding=$reader.CurrentEncoding; $reader.Close(); $newContent=$encoding.GetString((Invoke-WebRequest -Uri $remote -UseBasicParsing).Content).TrimEnd(); $pattern='(?s)# GitHub520 Host Start.*?# Github520 Host End'; $newHostsContent=$hostsContent -replace $pattern, ''; if (-not $newHostsContent.EndsWith([Environment]::NewLine)) { $newHostsContent+=[Environment]::NewLine; } [System.IO.File]::WriteAllText($hostsPath, $newHostsContent + $newContent, $encoding); }"
+```
+
+> https://github.com/521xueweihan/GitHub520/issues/274
+
 ## 查看当前目录下所有文件大小并排序
 
 ```bash
