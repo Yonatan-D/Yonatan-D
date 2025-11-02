@@ -10,20 +10,18 @@ wx = wxProxy(wx);
 function wxProxy(wx) {
   const newWx = { ...wx };
 
-  // 代理showLoading/hideLoading
-  const loadingApiProxy = (loadingApi) => {
+  // 代理函数，在调用时进入断点并输出文件位置
+  const proxyFn = (fn) => {
     return (object) => {
       console.trace();
       debugger
-      return loadingApi(object);
+      return fn(object);
     }
   }
 
-  // 代理wx.showLoading
-  newWx.showLoading = loadingApiProxy(wx.showLoading);
-
-  // 代理wx.hideLoading
-  newWx.hideLoading = loadingApiProxy(wx.hideLoading);
+  // 重写 showLoading 和 hideLoading 函数
+  newWx.showLoading = proxyFn(wx.showLoading);
+  newWx.hideLoading = proxyFn(wx.hideLoading);
 
   return newWx;
 }
