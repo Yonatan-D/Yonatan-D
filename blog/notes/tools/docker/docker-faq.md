@@ -129,3 +129,16 @@ docker cp /root/localtime 容器ID:/etc/
 ```bash
 docker exec -it 容器ID date
 ```
+
+## 限制docker生成core文件
+
+问题排查：服务器磁盘空间不足，排查发现是docker容器生成的core文件占用了大量空间
+
+```bash
+[root /]# ulimit -a
+core file size          (blocks, -c) 0		 
+# 0不启用, unlited不限制  单位kb
+
+方法一: 修改 docker.service 的 ExecStart 这一行，追加 –default-ulimit core=0:0 # 禁用容器生成Core文件
+方法一: docker run --ulimit core=0
+```

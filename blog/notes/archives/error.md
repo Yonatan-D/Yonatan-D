@@ -1,5 +1,31 @@
 # 报错解决
 
+## chrome 升级版本后 iframe 嵌套的第三方页面白屏
+
+问题分析：
+
+Google 在2020年2月4号发布的 Chrome 80 版本默认屏蔽所有第三方 Cookies 跨域携带，使用了 SameSite Cookie 的策略保护跨站请求伪造(CSRF)和用户跟踪，所以 iframe 中 Cookies 无法传递。
+
+应急处理：
+
+谷歌浏览器访问 chrome://flags/
+搜索 SameSite by default cookies，参数设置成disabled
+
+【没试验过】https://blog.csdn.net/lj1530562965/article/details/117034307
+
+```js
+import Cookies from 'js-cookie'
+
+export function setToken (val) {
+   if (window.location.protocol === "https:") {
+    return Cookies.set("scs_token", val, {sameSite: "none", secure: true});
+   }
+   return Cookies.set("scs_token", val);
+}
+```
+
+?> 代码解决方案：在请求头携带 Cookies
+
 ## eggjs 站点通过 nginx 无法访问，而直连可以访问
 
 该服务在 nginx 上做了负载均衡，单独访问每个节点都可以访问，但通过 nginx 访问时，偶发性无法访问。

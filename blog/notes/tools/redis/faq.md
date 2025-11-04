@@ -1,3 +1,144 @@
+## 找出线上Redis连接数异常IP（连接数高）
+
+```bash
+redis> info clients
+redis> client list
+
+# 保存client list到文件
+echo client list | redis-cli -h 192.168.0.59 -p 6379 -a 123456 > client-list
+
+# 从文件中找出连接数前5的IP
+cat client-list | awk '{print $2}' | awk -F "[=:]" '{print $2}' | sort | uniq -c | sort -k1,1nr | head -5
+```
+
+> 参考：https://jishuin.proginn.com/p/763bfbd3624d
+
+## Windows编译安装Redis 6.0
+
+!> 该方法踩坑，详情见 [连接数不够导致redis假死](#连接数不够导致redis假死)
+
+用MSYS2来提供gcc和make环境
+
+先下载MSYS2，清华源  https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/
+
+下载解压，然后需要给pacman（msys2的软件管理器）换一下国内源（/etc/pacman.d/）https://mirrors.tuna.tsinghua.edu.cn/help/msys2/
+
+pacman -Sy
+
+pacman -S gcc make
+
+cd /d/redis-6.2.3/
+
+> 6.2 版本 编译失败：未知的类型名 ‘Dl_info’
+>
+> /usr/include/dlfcn.h
+>
+> 找到 Dl_info定义的地方，删除上面的 `#if` 和下面的 `#endif` 两行【49，61行】
+
+make install PREFIX=/d/msys64/tmp
+
+复制 msys-2.0.dll, redis.conf 和 sentinel.conf 到 tmp
+
+借助 nssm 制作成服务
+
+教程出处：https://blog.csdn.net/oooo2316/article/details/107545700
+
+
+编译redis报错/deps/hiredis/libhiredis.a解决
+进入源码包目录下的deps目录中执行
+```bash
+make lua hiredis linenoise hdr_histogram
+```
+https://blog.csdn.net/weixin_34137799/article/details/91735286
+
+
+经测试, msys, cygwin 在我的电脑上16G剩余内存8G的环境, 并发到55就崩了
+
+(winserver 2016 8G, 实际可用2G环境下测试, 并发撑不到40)
+
+Why can Redis only have 124 connections in cygwin64？
+
+https://github.com/redis/redis/issues/8330
+
+github 上有人用过 visual Studio 2022 去编译, 性能会好点, 但还是有些差距
+
+测试过最好的是这个: https://github.com/tporadowski/redis
+现在是2022-10-25, 目前更到 5.0.14.1, 期待快点更新到6.2
+
+最后这次又遇到这个问题, 是因为扫描出4.x和6.x某些早期版本有漏洞, 所以想升级, 以及同一天也有人提出6.x长时间运行会假死
+
+
+> Cygwin编译redis windows ~~【未实践】~~  (实践结果也是连接数小, 扛不住并发)
+>
+> https://blog.csdn.net/sunbcy/article/details/120323975
+>
+
+## 连接数不够导致redis假死
+
+问题分析：升级了 redis 服务。该 redis 6.x 是 wdinwos 下编译的，读取不到正确最大连接数，连接数不够导致假死
+
+```bash
+# 开启日志，便于观察
+logfile "D:/redis/redis.log"
+loglevel notice  (生产模式推荐)
+# 网络IO线程
+io-threads-do-reads yes
+io-threads 4  (低于CPU核数)
+# 客户端最大连接数
+info clients
+CONFIG GET maxclients
+
+3200-32  (受系统限制，redis增大配置也无效)
+10000-32
+```
+![redis-log](./faq.assets/redis-log.png)
+
+wdinwos下编译的6.x版本redis：
+
+![image-20210830150014672](./faq.assets/image-20210830150014672.png)
+
+wdinwos下编译的4.x版本redis：
+
+![image-20210830150126398](./faq.assets/image-20210830150126398.png)
+
+regedit
+
+计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows
+
+GDIProcessHandleQuota  2710(十六进制)/10000(十进制)
+
+USERProcessHandleQuota  2710(十六进制)/10000(十进制)
+
+[参考java redis 连接池 假死](https://www.jianshu.com/p/c4a75ca20abe)
+
+---
+
+首次排查分析原因：
+
+~~该应用是用 egg.js 写的，使用 --workers=2 减少进程，启动速度快了很多。该程序是窗口运行的，观测到日志已经卡住了，合理猜测前面有未结束的进程还在后台占用连接数，再启动程序就因超了连接数而超时。~~
+
+同时发现代码有待优化，遍历海量数据不能用 keys 应该用 scan
+
+## redis：max number of clients reached
+
+redis连接数超了，查看最大连接数：
+
+```bash
+CONFIG GET maxclients
+```
+
+## redis：ERR The operating system is not able to handle the specified number of clients
+
+linux解决方法（未试验）：
+
+https://blog.csdn.net/William0318/article/details/104682854
+
+```bash
+cat /proc/pid/limits
+vim /etc/security/limits.conf
+(略)
+```
+
 ## 在 docker arm 容器内编译 redis 踩坑记录
 
 ### 第①个：lower value of 128
