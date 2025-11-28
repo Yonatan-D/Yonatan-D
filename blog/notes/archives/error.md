@@ -1,5 +1,114 @@
 # 报错解决
 
+## vsphere client 虚拟机 unknown 不可访问
+
+背景：公司断电导致的7个服务器变为unknown，挂掉了一个磁盘。后来查出来是机房的一台光纤交换机没恢复供电，恢复后重启自动挂载启动解决。
+
+马克一下找到的恢复方法，以防真的极端情况下需要恢复数据：[EXSI 5.5 虚拟机，使用*-flat.vmdk恢复的方法](https://blog.51cto.com/unclemao/1729428)
+
+## 人大金仓(kingbase)数据库把空字符串当成Null
+
+代码里有段sql是 `xxx字段<>''`，意思是查询该字段不为空字符串的记录，但是人大金仓数据库把空字符串当成Null，所以查询结果为空。
+
+复现步骤：
+
+```sql
+SELECT '' = '';
+```
+
+输出：false
+
+解决只需修改人大金仓数据库配置：
+
+```toml
+ora_input_emptystr_isnull = false
+```
+
+## 记一次误操作卸载 iptabels-server 后如何恢复 docker 服务
+
+把同时被删掉的15个包（service等命令），都安装回来
+
+```bash
+yum -y install iptables abrt-addon-vmcore abrt-cli abrt-console-notification dhclient dracut-network firewalld initscripts iproute kbd kexec-tools libstoragemgmt libstoragemgmt-python libstoragemgmt-python-clibs plymouth plymouth-scripts
+```
+
+根据系统日志逐一排查问题
+
+```sh
+tail -f /var/log/messages
+```
+
+原来的/etc/init.d/下的启动脚本全都丢失。恢复下 /etc/systemd/system/ 目录下的 docker.service 和 docker.socket 文件：
+
+```bash
+#docker.service中添加内容
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network-online.target firewalld.service
+Wants=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/dockerd
+ExecReload=/bin/kill -s HUP $MAINPID
+
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+
+TimeoutStartSec=0
+
+Delegate=yes
+
+KillMode=process
+
+Restart=on-failure
+StartLimitBurst=3
+StartLimitInterval=60s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+#docker.socket中添加内容
+[Unit]
+Description=Docker Socket for the API
+PartOf=docker.service
+
+[Socket]
+ListenStream=/var/run/docker.sock
+SocketMode=0660
+SocketUser=root
+SocketGroup=docker
+
+[Install]
+WantedBy=sockets.targe
+```
+
+```bash
+#添加文件权限
+chmod +x /etc/systemd/system/docker.service
+# 先重启 systemctl 守护进程
+sudo systemctl daemon-reload
+```
+
+补上缺失的网桥（卸载时连同被清理了）：
+
+```bash
+ip link add name docker0 type bridge
+ip addr add dev docker0 172.17.0.1/16
+```
+
+可以启动了：
+
+```bash
+sudo systemctl start docker
+# 设置自启动
+sudo systemctl enable docker
+```
+
 ## chrome 升级版本后 iframe 嵌套的第三方页面白屏
 
 问题分析：

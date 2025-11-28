@@ -142,3 +142,9 @@ core file size          (blocks, -c) 0
 方法一: 修改 docker.service 的 ExecStart 这一行，追加 –default-ulimit core=0:0 # 禁用容器生成Core文件
 方法一: docker run --ulimit core=0
 ```
+
+## docker运行卷映射，宿主机没文件，容器内文件消失
+
+背景：老大做了个 cnpmjs 镜像，我拿到服务器上部署时有个目录做卷映射不成功 (config不可以，download可以)
+
+原因 (网上找到相似经历)：https://www.jianshu.com/p/530d00f97cbf

@@ -12,6 +12,14 @@ ps -ef | grep 程序名 | awk '{print $2}' | xargs kill -9
 taskkill /f /im 程序名.exe
 ```
 
+## windows 删除服务
+
+Win+R 输入 services.msc 打开服务，选中列表项右键属性查看服务名称，cmd执行以下命令：
+
+```bash
+sc delete [服务名称]
+```
+
 ## Github520 - fetch_github_hosts
 
 windows
@@ -76,6 +84,10 @@ bindkey "\e\e" sudo-command-line
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime
 ```
 
+## windows输入法不见了
+
+Win+R 运行 ctfmon.exe
+
 ## nmap
 
 ```sh
@@ -133,6 +145,16 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 route print
 ```
 
+## 快速启动本地服务
+
+有2个工具：http-server，anywhere
+
+```sh
+npx http-server -p 3000 
+
+npx anywhere -p 3000
+```
+
 ## js 清空数组
 
 看到一处注释，“**千万不要**在布局函数里面对routes进行重新赋值，如`routes=[]`，但是你可以使用`routes.length=0`来清空路由数组，然后重新添加路由对象到数组里，总之，不要改变routes对象的指针指向。”
@@ -180,6 +202,72 @@ rm -rf node_modules
 # windows
 rd /s /q node_modules
 ```
+
+## 自动监测进程的脚本
+
+!> 专业的事交给专业的人做，脚本仅供参考。推荐工具：Systemd、Supervisor、PM2
+
+```bash
+#!/bin/bash
+
+#######################################################
+# 镜像 root 目录新增如下:
+#
+# /root
+#
+#   |- daemon.sh
+#
+#   |- cleanup_log.sh
+#
+# 使用：
+# crontab -e
+# 10 * * * * docker exec myweb bash -c "cd /root && ./#aemon.sh [参数: 需要被守护的服务名]"
+# 0 0 * * * docker exec skylandweb bash -c "cd /root && #leanup_log.sh"
+#
+# 第一条为每10分钟去执行服务守护脚本
+# 第二条为每天0时清除日志文件
+#######################################################
+
+serverName=$1
+serverLog=/root/logs/$1.log
+time=$(date +"%F %H:%M:%S")
+serverPID=$(ps -ef | grep $serverName | grep -v 'grep' | awk '{print $2}')
+
+Daemon () {
+  if[ serverPID ];then
+    echo "[$serverPID] [$time] server working"
+  else
+    kill -9 $serverPID
+    echo "[$serverPID] [$time] server stoped"
+    echo "[error] server need to restart"
+    echo "[info]  waiting..."
+    # 启动命令
+    #
+    #
+  fi
+  echo "--------------------------"
+  sleep 1
+  done
+}
+
+Daemon>>$serverLog
+```
+
+## 移除 Windows DNS 缓存
+
+telnet 网关 (如: telnet 192.168.14.254)
+
+display current-configuration (看到所有段的网关信息)
+
+system-view (进入视图，我猜测是当前网关的ip池)
+
+display this (显示当前段的网关信息，即: 192.168.14.254)
+
+undo dns-list x.x.x.x (移除DNS)
+
+qu (退出)
+
+save (保存，网关会重启，短暂断网)
 
 ## 添加 Typora 到右键
 

@@ -189,3 +189,39 @@ const imageIsExist = (url) => {
 ```js
 const firstUpperCase = ([first, ...rest]) => first?.toUpperCase() + rest.join('');
 ```
+
+## new.target 检测是否是 new 调用
+
+```js
+class A {
+  constructor() {
+    if (new.target === A) {
+      throw new TypeError('A is not a constructor');
+    }
+  }
+}
+
+const a = new A(); // 报错 "A is not a constructor"
+```
+
+## 正则表达式的 new RegExp 与字面量方式
+
+```js
+// 字面量方式
+const regex1 = /pattern/flags;
+
+// 构造函数方式
+const regex2 = new RegExp('pattern', 'flags');
+const regex3 = new RegExp(/pattern/, 'flags');
+```
+
+注意事项：
+
+1. 转义字符处理
+
+    - 字面量 - 只需要一次转义。例如：/\d+/
+    - 构造函数 - 需要两次转义（字符串转义 + 正则转义）。例如：new RegExp('\\d+')
+
+2. 字面量在代码加载时编译，构造函数在代码运行时编译
+
+3. 构造函数可以动态构建，字面量不行

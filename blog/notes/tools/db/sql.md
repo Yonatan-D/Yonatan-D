@@ -1,3 +1,13 @@
+## mysql日志时间不对
+
+在 mysql 的配置文件 /etc/my.cnf 中 `[mysqld]` 中增加一条 log_timestamps 的配置
+
+配置生效后和系统时间同步，只对后面的日志生效
+
+```
+log_timestamps=SYSTEM
+```
+
 ## 快速备份还原mysql
 
 mysqldump
@@ -178,6 +188,10 @@ ORDER BY data_size desc;
 -- 查看物理文件的路径
 show variables like 'datadir'
 ```
+
+以ibd结尾的是：名称对应的独立的表空间文件
+
+以frm结尾的是：名称对应的表结构定义文件
 
 ## 启用安全审计
 

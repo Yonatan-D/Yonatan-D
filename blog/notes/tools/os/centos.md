@@ -70,3 +70,51 @@ xfs_growfs /dev/mapper/centos-home
 10.touch /.autorelabel 
 11.输入2次 exit
 ```
+
+## 简易搭建局域网内部dns服务器
+
+```dockerfile
+FROM centos:7
+ 
+RUN yum install -y bind-utils bind bind-devel bind-libs && \
+    yum clean all && \
+    rm -rf /var/cache/yum/*
+
+COPY /etc/named.conf
+COPY /etc/named.rfc1912.zones
+RUN cp -a /var/named/named.localhost /var/named/yonatan.io.zone
+
+EXPOSE 53/udp 53/tcp
+
+ENTRYPOINT ["/sbin/entrypoint.sh"]
+
+CMD ["/usr/sbin/named"]
+```
+
+
+## 服务器时间同步
+
+1.编写被定时执行的脚本
+
+vim /usr/local/bin/ntpdate_timesync.sh
+
+写入如下内容
+
+```bash
+#!/bin/bash
+
+step=1
+
+for (( i=0; i<60; i=(i+step) )); do
+  ntpdate -u ntp.api.bz >> /var/log/ntpdate_timesync.log 2>&1
+  sleep $step
+
+
+exit 0
+```
+
+2、对脚本实现定时执行管理：
+
+```bash
+* * * * * bash /usr/local/bin/ntpdate_timesync.sh
+```

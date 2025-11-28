@@ -1,3 +1,11 @@
+## Nginx正向代理https时502
+
+https -> https，SNI问题，要用域名！！！
+
+```nginx
+proxy_ssl_server_name on
+```
+
 ## nginx阻止xss和csrf攻击
 
 XSS攻击
