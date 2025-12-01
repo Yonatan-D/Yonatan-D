@@ -1,5 +1,63 @@
 # 报错解决
 
+## Vue前端项目较大，运行和编译都报错内存溢出
+
+```
+报错如下：
+FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
+```
+
+【已弃用】使用这个插件，配置后运行 fix-memory-limit 解决：[increase-memory-limit](https://www.npmjs.com/package/increase-memory-limit)
+
+从 2017 年 8 月发布的 Node.js v8.0 开始，可以设置全局环境变量：
+
+```
+export NODE_OPTIONS=--max_old_space_size=4096
+```
+
+推荐只修改对应项目的 package.json 的 scripts 命令：
+
+```
+--max-old-space-size=4096
+```
+
+vue-cli2 按上面方法可行，vue-cli3 则需要这么写：
+
+```bash
+node --max_old_space_size=4096 node_modules/.bin/vue-cli-service build --mode test
+```
+
+##  Egg开启自动生成dts报错：Symbol.for('egg#eggPath') is required on Application
+
+背景：Egg开启智能提示（https://zhuanlan.zhihu.com/p/56780733）。业务项目 yarn link 封装的框架项目，并在 package.json 添加 "egg": { "declarations": true }，启动应用 `npm run dev` 报错
+
+参考：https://github.com/eggjs/egg/issues/3591
+
+临时解决：
+
+找到 project/node_modules/egg-core/lib/loader/egg_loader.js ，改成：
+
+```js
+proto === Object.prototype || proto === EggCore.prototype || proto.constructor.name === 'EggCore'
+```
+
+## colors.js被恶意提交导致控制台输出乱码
+
+排查项目中是否有使用 colors 库
+
+```sh
+yarn why colors 
+```
+在 package.json 配置 resolutions 锁定正常版本
+
+```json
+"resolutions": {
+  "colors": "1.4.0"
+},
+```
+
+> 如果项目用的是 npm：运行 npm ls colors，配置 overrides（支持嵌套、重写特定模块下的子依赖）
+
 ## vsphere client 虚拟机 unknown 不可访问
 
 背景：公司断电导致的7个服务器变为unknown，挂掉了一个磁盘。后来查出来是机房的一台光纤交换机没恢复供电，恢复后重启自动挂载启动解决。

@@ -53,6 +53,10 @@ history -i
 cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
 ```
 
+## Linux 注销时执行脚本，删除 history 记录
+
+每个用户登出时都清除输入的命令历史记录，可以在`.bash_logout` 文件中添加下面这行`rm -f $HOME/.bash_history` 。这样，当用户每次注销时，`.bash_history `文件都会被删除.【需谨慎，使用rm删除命令时加上-i参数让用户确认】
+
 ## 按两下 Esc 键往上条命令或者当前正在输入的命令前加上（或删去） "sudo"
 
 添加到 .bashrc 或 .zshrc 文件

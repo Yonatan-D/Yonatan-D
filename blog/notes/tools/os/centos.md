@@ -118,3 +118,9 @@ exit 0
 ```bash
 * * * * * bash /usr/local/bin/ntpdate_timesync.sh
 ```
+
+## centos 查询安装文件
+
+```shell
+rpm -qa xxx
+```

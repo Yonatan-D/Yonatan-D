@@ -77,3 +77,32 @@ Exec=/usr/bin/google-chrome-stable --disable-web-security --user-data-dir=/home/
 ```
 
 统信浏览器需要多去掉 X-Deepin 前缀的 3 行配置
+
+## nodejs项目启动报错：Error: ENOSPC: System limit for number of file watchers reached
+
+这是因为文件监视程序的系统产生了限制，达到了默认的上限，需要增加限额
+
+```bash
+echo fs.inotify.max_user_watches = 524288 | sudo tee -a /etc/sysctl.conf 
+sudo sysctl -p
+```
+
+## arm架构下 node 编译的 canvas、images
+
+1. canvas: [No prebuilt found for arm64 ](https://github.com/Automattic/node-canvas/issues/1662)
+
+自己编译：
+
+```bash
+$ sudo apt-get update 
+$ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+$ yarn add canvas
+```
+
+2. images: [images 没有适配ARM64？](https://github.com/zhangyuanwei/node-images/issues/240)
+
+直接下载编译好的：
+
+```bash
+https://github.com/zhangyuanwei/node-images/files/7709901/linux-arm64-binding.node.zip
+```

@@ -74,3 +74,58 @@ cat $HOME/.deepinwine/com.alipay.devtools.deepin/drive_c/users/$USER/AppData/Roa
 修改 $HOME/.deepinwine/com.alipay.devtools.deepin/drive_c/users/$USER/.mini-ide/settings.json
 添加：`"core.disableGPU": true`
 
+## 离线安装 NVM (Node.js)
+
+1. nvm 离线安装步骤：
+
+先准备好 nvm 安装包：
+
+https://github.com/nvm-sh/nvm/archive/refs/tags/v0.39.7.tar.gz
+
+```bash
+# 新建 nvm 目录
+sudo mkdir /usr/local/nvm
+sudo chown -R admin:admin /usr/local/nvm
+
+# 解压到 nvm 目录
+sudo tar xzf v0.39.7.tar.gz –-strip-components=1 -C /usr/local/nvm
+
+# 添加环境变量
+sudo deepin-editor /etc/profile.d/nvm.sh
+
+# 在 /etc/profile.d/nvm.sh 文件中添加以下内容（配置了默认版本为18.19.0，因为此时还没装node，所以请忽略报错）
+export NVM_DIR="/usr/local/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm alias default v18.19.0 >> /dev/null
+
+# 在 ~/.bashrc 文件末尾加上 source /etc/profile
+sed -i '$a source /etc/profile' ~/.bashrc
+
+# 重启终端，运行 nvm 命令，查看是否安装成功
+nvm -v
+```
+
+2. node.js 离线安装步骤：
+
+先准备好 node.js 安装包：
+
+https://nodejs.org/download/release/v18.19.0/node-v18.19.0-linux-x64.tar.gz
+
+```bash
+# 在 nvm 安装目录下新建一个文件夹，用于存放 node
+sudo mkdir -p /usr/local/nvm/versions/node
+
+# 解压 node.js 安装包到 node 文件夹
+sudo tar xzf node-v18.19.0-linux-x64.tar.gz -C /usr/local/nvm/versions/node/ --transform s/node-v18.19.0-linux-x64/v18.19.0/g
+```
+
+3. 使用 NVM 切换 Node 版本
+
+```bash
+# 显示当前可使用的 node 版
+nvm ls
+
+# 设置当前 node 版本为 18
+nvm use v18.19.0
+```
