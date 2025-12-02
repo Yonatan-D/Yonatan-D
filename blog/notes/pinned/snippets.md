@@ -58,6 +58,27 @@ async queryOrderInfo({ orderId }, { ctx }) {
 }
 ```
 
+## egg + pm2 + pkg 线上部署及打包
+
+我的示例工程: https://gitee.com/yonatan/egg-example.git
+
+pm2 入口文件, 在 pkg 同样适用
+
+```js
+const egg = require('egg');
+const minimist = require('minimist');
+
+const options = minimist(process.argv.slice(2));
+
+egg.startCluster({
+  baseDir: __dirname,
+  ...options
+});
+```
+
+[Egg.js 进程管理为什么没有选型 PM2 ？](https://www.zhihu.com/question/298718190)
+
+
 ## 批量 require 指定目录下的 *.Controller.js 文件
 
 ```js

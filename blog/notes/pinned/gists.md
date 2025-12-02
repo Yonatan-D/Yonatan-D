@@ -3,13 +3,20 @@
 ## 结束指定程序名的所有进程
 
 ```bash
+# linux
 ps -ef | grep 程序名 | awk '{print $2}' | xargs kill -9
+
+# windows
+taskkill /f /im 程序名.exe
 ```
 
-## windows 结束指定程序名的所有进程
+## 根据进程号PID查找启动程序的全路径
 
-```cmd
-taskkill /f /im 程序名.exe
+```bash
+ps -ef | grep xxx
+
+# 假如PID为 1234
+ls -l /proc/1234/cwd
 ```
 
 ## windows 删除服务
@@ -299,6 +306,30 @@ rem Windows Registry Editor Version 5.00
 rem [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU] "MRUList"=-
 ```
 
+## UMD 工作原理
+
+AMD 和 CommonJS 的综合，AMD 通常在浏览器端使用，异步加载模块，CommonJS 通常在服务端使用，同步加载模块，为了能兼容，所以想出了这么一个通用的解决方案
+
+```js
+(function(root, factory){
+  // 先判断是否支持AMD(define是否存在)
+  if(typeof define === 'function' && define.amd) {
+    // 如果有依赖，例如：define(['vue'], factory); 下面同理，采用对应的模块化机制，加载依赖项
+    define(factory);
+  // 判断是否支持CommonJS模块格式    
+  } else if(typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  // 前两种都不存在，将模块挂载到全局(window或global)  moduleName代表模块名称 
+  } else {
+    root.[moduleName] = factory();
+  }
+}(this, function(){
+  return {
+    test: function(){}
+  };
+}))
+```
+
 ## Vue组件重绘，唯一key的用法 
 
 通过 `:key="key"` 实现，原理看[官方文档](https://cn.vuejs.org/api/built-in-special-attributes.html#key)。所以当 key 值变更时，会触发重新渲染。以前我的做法是通过watch监听数据变更。
@@ -315,6 +346,18 @@ rem [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU
 docker容器内跑eggjs工程启动报错：首先，启动命令不指定workers线程数的话，会默认创建和CPU核数相当的线程数，这是前提。又因为，docker容器本身的限制（额外提下，Docke容器使用主机CPU资源是不受限制的。作者说，Node&&Docker的BUG，os.cpus()无法识别在docker里正确的核数），所以就冲突了。容器化的egg最好直接指定worker进程数量（小一点的数，比如2），另外真实机器建议worker数和CPU核数一致。
 
 https://github.com/eggjs/egg/issues/3088
+
+## 内网发送短信
+
+遇到一个内网环境下发送短信的需求，搜到一些实现思路：
+
+1. 使用内网数据库，外网程序轮询该数据库，读取短信内容，调用短信接口发送【需要一台能被外网访问的服务器，单向网络】
+
+2. 内网直接有专线连接到运营商的短信系统，用内网地址就可以调用运营商短信接口【需要运营商专线，成本较高】
+
+3. 使用“短信猫”外接设备。内网终端生成待发送短信，通过短信猫直接发送【需要内网部署短信猫设备】
+
+4. 用一台能访问内外网的服务器，接收短信并上传到短信服务平台，平台解析后调用短信接口发送【需要一台内外网策略通的服务器作为中转】
 
 ## 可视化大屏的数据对接
 

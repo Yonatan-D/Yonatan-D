@@ -148,3 +148,9 @@ core file size          (blocks, -c) 0
 背景：老大做了个 cnpmjs 镜像，我拿到服务器上部署时有个目录做卷映射不成功 (config不可以，download可以)
 
 原因 (网上找到相似经历)：https://www.jianshu.com/p/530d00f97cbf
+
+## docker应该使用 pm2-runtime
+
+pm2-runtime 是为 Docker 容器设计的，它将应用程序置于前台，从而使容器保持运行状态
+
+简单来说，容器的生命周期就是 `CMD` 或 `entrypoint` 的生命周期, 在使用 `CMD [ "pm2", "start","/app/server.js"]` 的情况下, 容器将在运行过程后立即死亡

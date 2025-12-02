@@ -1,5 +1,127 @@
 # 报错解决
 
+## [CVE-2021-4034] 漏洞解决
+
+polkit 今年2月份爆出漏洞 [2022.2.24 【漏洞通告】Polkit pkexec 权限提升漏洞（CVE-2021-4034）]，需要升级安全版本
+
+离线升级 Polkit：
+
+```bash
+rpm -qa polkit
+yum localinstall polkit-0.112-26.el7_9.1.x86_64.rpm
+```
+
+## 启动polkit时，报错: Authorization not available. Check if polkit service is running or see debug message for more information
+
+背景: 客户那边的服务器现在网卡服务启动不起来，防火墙等服务都启动不起来，
+原因可能是之前升级 polkit 导致。但是之前升级了没什么问题，现在因为客户的服务器昨天下午重启了，然后由于polkit 启动不起来，导致网卡和防火墙也启动不起来。
+
+```bash
+Authorization not available. Check if polkit service is running or see debug message for more information.
+Failed to start polkit.service: Connection timed out
+```
+
+排查步骤：
+
+先看错误日志
+
+```bash
+#启动服务的时候 去查看message日志
+taif -f /var/log/message
+```
+
+```bash
+Failed to activate service 'org.freedesktop.login1': timed out
+Failed to activate service 'org.freedesktop.PolicyKit1': timed out
+```
+
+使用 polkitd 来调试错误, 手动运行
+
+```bash
+/usr/lib/polkit-1/polkitd
+
+# /usr/lib/polkit-1/polkitd --no-debug &
+# systemctl start polkit
+```
+
+可能是服务启动顺序的优先级, 尝试手动调整 polkit 服务, 先重启 dbus 服务再启动 polkit
+
+> 错误原因分析: 当使用 daemon-reload 或者使用 restart 指令来重新加载启动 polkit 服务的时候，竞态条件会优先序列将会发生改变，与此同时 systemctl status 将会立马报告 polkit 卡在了启动状态。但是 polkit 进程实际上是在运行的，系统只是简单地忽略掉了 bus 属主的改变
+>
+> 吐槽: 看社区讨论, 挺多人也遇到过, 这个问题存在有一段时间了
+
+```bash
+systemctl restart dbus.service
+systemctl start polkit.service
+```
+
+最终办法, 重装 polkit
+
+```bash
+# 在线安装
+yum reinstall polkit
+systemctl start polkit
+
+# 离线安装
+# 先下载好软件包 polkit-0.112-26.el7_9.1.x86_64.rpm
+yum localinstall polkit-0.112-26.el7_9.1.x86_64.rpm
+
+如果还是报错，就尝试将 polkit 包卸载不重装，然后在重新加载服务(systemctl daemon-reload)试试
+```
+
+## WebDAV：传输文件超过大约50MB的文件会弹出“0x800700DF: 文件大小超过允许的限制，无法保存”
+
+WIN+R -> regedit -> HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters -> FileSizeLimitInBytes -> 修改为 ffffffff（十六进制下输入ffffffff，或者十进制下输入4294967295，约为4G）
+
+![截图](archives/images/error-webdav-0x800700DF-50mb.png)
+
+## crontab 定时执行 docker 容器内程序或脚本失败
+
+定时任务设置好 `docker exec -it myWeb bash /root/start.sh` 后，日志显示总是失败，网上检索到一个回答：Your docker exec command says it needs "pseudo terminal and runs in interactive mode" (-it flags) while cron doesn't attach to any TTYs.
+
+大致意思 exec 加了 -it 参数是开启了一个终端，计划任务是无法进入任何终端的。
+
+把 `docker exec` 的参数 `-it` 去掉后问题解决了。
+
+## gyp ERR! stack Error: EACCES: permission denied, rmdir 'build'
+
+Issues: https://github.com/nodejs/node-gyp/issues/1547
+
+**[Mentors4EDU](https://github.com/Mentors4EDU)** commented on [10 Oct 2018](https://github.com/nodejs/node-gyp/issues/1547#issuecomment-428345362)
+
+```bash
+# 尝试使用 sudo chmod 777 node_modules 目录的命令，如果不起作用，请尝试
+sudo npm install --unsafe-perm
+# 或
+sudo node-gyp rebuild --unsafe-perm
+```
+
+## 关于Windows端口没被占用提示An attempt was made to access a socket in a way forbidden by its access permissions
+
+修改需要重启计算机!!!
+
+```cmd
+# 1.关闭Hyper-V
+dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
+# 2.修改动态端口范围
+# start 起始端口  num 表示可用端口数     按自己的需求来,这里使用标准的49152~65535
+netsh int ipv4 set dynamicport tcp start=49152 num=16384
+
+# 2-1.排除ipv4动态端口占用 startport 起始端口 numberofports 端口数
+# netsh int ipv4 add excludedportrange protocol=tcp startport=50051 numberofports=1
+# 2-2.udp协议端口
+# netsh int ipv4 set dynamicport udp start=49152 num=16384
+
+# 3.重启hyper-v
+dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+```
+
+参考文章:
+
+[关于Windows端口没被占用提示An attempt was made to access a socket in a way forbidden by its access permissions](https://blog.csdn.net/tian2342/article/details/108934646)
+
+[TCP/IP 端口耗尽故障排除 - Windows Client | Microsoft Learn](https://learn.microsoft.com/zh-cn/troubleshoot/windows-client/networking/tcp-ip-port-exhaustion-troubleshooting)
+
 ## Vue前端项目较大，运行和编译都报错内存溢出
 
 ```
