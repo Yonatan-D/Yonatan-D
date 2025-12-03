@@ -1,3 +1,29 @@
+## MySQL: Prepared statement needs to be re-prepared
+
+> 很简单的查询一行数据的 sql 语句就抛出异常，不清楚是否和数据库中间件最近更新的特性获取表名字段有关，暂时先通过调整 mysql 配置解决
+
+- 查看配置：
+
+```bash
+SHOW VARIABLES LIKE '%table_open_cache%';
+SHOW VARIABLES LIKE '%table_definition_cache%';
+```
+
+- 执行语句，立即生效
+
+```mysql
+SET GLOBAL table_open_cache=16384;
+SET GLOBAL table_definition_cache=16384;
+```
+
+- 再修改下 my.cnf 文件配置，这样下次启动 mysql 的时候就不会出现这个问题了
+
+```bash
+[mysqld]
+table_open_cache = 16384
+table_definition_cache = 16384
+```
+
 ## mysql日志时间不对
 
 在 mysql 的配置文件 /etc/my.cnf 中 `[mysqld]` 中增加一条 log_timestamps 的配置

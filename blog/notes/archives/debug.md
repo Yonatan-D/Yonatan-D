@@ -147,3 +147,23 @@ echo "开始抓取 $APP_PACKAGE 的日志..."
 # 开始抓取日志
 adb.exe logcat --pid=$SELECTED_PID
 ```
+
+## 5 写一个请求代理工具
+
+web-debugging-proxy-devtools: https://gitee.com/yonatan/web-debugging-proxy-devtools.git
+
+特性：
+
+- 默认转发全部请求
+
+- 支持拦截特定请求的 request 和 response
+
+  - 不转发，直接返回自定义数据
+
+  - 修改入参继续请求
+
+  - 修改返回数据
+
+- 缓存接口数据，支持离线调试
+
+WIP: 方便自己调试的一个工具，以后开源
