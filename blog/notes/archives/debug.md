@@ -150,7 +150,8 @@ adb.exe logcat --pid=$SELECTED_PID
 
 ## 5 写一个请求代理工具
 
-web-debugging-proxy-devtools: https://gitee.com/yonatan/web-debugging-proxy-devtools.git
+?> 解决我自己痛点的一个小工具，会考虑开源：[web-debugging-proxy-devtools](https://gitee.com/yonatan/web-debugging-proxy-devtools.git)【WIP】  
+
 
 特性：
 
@@ -158,7 +159,7 @@ web-debugging-proxy-devtools: https://gitee.com/yonatan/web-debugging-proxy-devt
 
 - 支持拦截特定请求的 request 和 response
 
-  - 不转发，直接返回自定义数据
+  - 返回自定义数据
 
   - 修改入参继续请求
 
@@ -166,4 +167,68 @@ web-debugging-proxy-devtools: https://gitee.com/yonatan/web-debugging-proxy-devt
 
 - 缓存接口数据，支持离线调试
 
-WIP: 方便自己调试的一个工具，以后开源
+自定义请求处理文件：
+
+```js
+// request/order/getOrderInfo.js
+export default async function getOrderInfo(data, { ctx, next }) {
+  // 转发请求
+  // return next();
+
+  // 修改入参或返回数据
+  // const response = await next({ data });
+  // return response;
+
+  // await new Promise(resolve => setTimeout(resolve, 2000));
+  // 返回自定义数据
+  const result = {
+    code: 0,
+    message: 'success',
+    data: {
+      orderId: '1234567890',
+      orderStatus: '已完成',
+      orderAmount: 100.00,
+      orderTime: '2022-01-01 12:00:00',
+    }
+  }
+  console.log('=============> 自定义请求处理 getOrderInfo', JSON.stringify(result));
+  return result;
+}
+```
+
+核心代码：
+
+```js
+// 自定义请求处理中间件
+export default async function customHandlerMiddleware (ctx, next) {
+  try {
+    // 有缓存数据，直接返回
+    const cacheData = await loadFromCache(ctx);
+    if (cacheData) {
+      handleResponse(ctx, cacheData);
+      return;
+    }
+
+    // 是否有自定义请求处理文件，例如：request/order/getOrderInfo.js
+    const customRequestPath = path.join('request', this.ctx.url.split('?')[0] + '.js');
+    const customRequest = fs.existsSync(customRequestPath) 
+                            ? (await import(filePath)).default 
+                            : null;
+
+    if (customRequest && typeof customRequest === 'function') {
+      // 使用自定义处理，不转发请求
+      const data = { ...ctx.query, ...ctx.request.body };
+      const response = await customRequest(data, { ctx, next });
+      handleResponse(ctx, response);
+      return;
+    }
+
+    // 转发请求
+    const response = await next();
+    handleResponse(ctx, response);
+    await saveToCache(ctx, response);
+  } catch (error) {
+    handleError(ctx, error, '请求处理出错');
+  }
+}
+```
