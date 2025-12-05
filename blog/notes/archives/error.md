@@ -1,5 +1,70 @@
 # 报错解决
 
+## iOS 18版本，Cordova iOS 项目中无法正常打开外部链接
+
+> 背景：部分 iOS 的 APP 出现点击升级按钮无响应，没有跳去 App Store。`Jul 17th, 2025`  
+> 参考：https://blog.gitcode.com/b1d4d5c6f95895ab70eb99b484cc63d6.html
+
+这个问题的本质是 iOS 18 对 UIApplication API 的更新导致的。苹果在 iOS 10 中引入了新的 open(_:options:completionHandler:) 方法，并逐渐废弃了旧的 openURL(_:) 方法。在 iOS 18 中，苹果加强了对废弃 API 的限制，直接调用 openURL(_:) 会导致操作被强制返回 false，从而阻止了链接的打开。
+
+原本正常工作的外部链接功能突然失效，通过 target="_system" 属性设置的外部链接无法正常打开。检查项目中使用的插件是否包含调用 openURL(_:) 的代码：
+
+解决方法一：更新 cordova-plugin-inappbrowser 插件
+
+解决方法二：手动修改插件代码，将 `openURL(_:)` 替换为 `open(_:options:completionHandler:)`。
+
+将：
+
+```
+[[UIApplication sharedApplication] openURL:url];
+```
+
+替换为：
+
+```
+if (@available(iOS 10.0, *)) {
+    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+} else {
+    [[UIApplication sharedApplication] openURL:url];
+}
+```
+
+## iOS 18版本，APP打开微信小程序提示“由于应用universal link校验不通过”
+
+[微信OpenSDK官方说明](https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html) 如下：
+
+> 关于老版本 OpenSDK 中使用的 openUrl 接口说明
+> 
+> - 由于老版本 SDK 中使用的 openUrl 接口为系统废弃接口，如开发者在 iOS18 升级 Xcode16 进行打包，则会偶现SDK无法拉起微信的问题。
+> 
+> - 而该问题已经 在 2.0.4 的版本换新接口。因此，请近期有发版计划的开发者及时更新到2.0.4，避免影响用户日常使用
+
+解决方法一：Xcode 退回 15 版本
+
+解决方法二：OpenSDK 升级到 2.0.4 版本
+
+## [onlyoffice]: waiting for connection to the localhost host on port
+
+背景: 客户服务器上运行 onlyoffice 5.3.4.3 和 6.3 均有以下报错, 机器是有做网络访问限制的。`May 25th, 2022 6:53 PM`
+
+![error-onlyoffice-1](archives/images/error-onlyoffice-1.png)
+
+Github上有人提出解决方法, 修改脚本跳过连接检查即可: 
+
+https://github.com/ONLYOFFICE/Docker-DocumentServer/issues/171
+
+![error-onlyoffice-2](archives/images/error-onlyoffice-2.png)
+
+指定pg数据库的端口：
+
+https://github.com/ONLYOFFICE/Docker-DocumentServer/pull/170
+
+![error-onlyoffice-3](archives/images/error-onlyoffice-3.png)
+
+发现onlyoffice支持其他数据库类型, 先试下换个数据库. 最后如果还不行就只有再运行一个pg的数据库容器给onlyoffice使用了
+
+![error-onlyoffice-4](archives/images/error-onlyoffice-4.png)
+
 ## [CVE-2021-4034] 漏洞解决
 
 polkit 今年2月份爆出漏洞 [2022.2.24 【漏洞通告】Polkit pkexec 权限提升漏洞（CVE-2021-4034）]，需要升级安全版本
@@ -185,24 +250,6 @@ yarn why colors
 背景：公司断电导致的7个服务器变为unknown，挂掉了一个磁盘。后来查出来是机房的一台光纤交换机没恢复供电，恢复后重启自动挂载启动解决。
 
 马克一下找到的恢复方法，以防真的极端情况下需要恢复数据：[EXSI 5.5 虚拟机，使用*-flat.vmdk恢复的方法](https://blog.51cto.com/unclemao/1729428)
-
-## 人大金仓(kingbase)数据库把空字符串当成Null
-
-代码里有段sql是 `xxx字段<>''`，意思是查询该字段不为空字符串的记录，但是人大金仓数据库把空字符串当成Null，所以查询结果为空。
-
-复现步骤：
-
-```sql
-SELECT '' = '';
-```
-
-输出：false
-
-解决只需修改人大金仓数据库配置：
-
-```toml
-ora_input_emptystr_isnull = false
-```
 
 ## 记一次误操作卸载 iptabels-server 后如何恢复 docker 服务
 

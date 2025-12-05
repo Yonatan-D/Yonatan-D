@@ -124,3 +124,7 @@ exit 0
 ```shell
 rpm -qa xxx
 ```
+
+## linux重启自动挂盘
+
+![centos7-fstab](centos.assets/centos7-fstab.png)

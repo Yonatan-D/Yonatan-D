@@ -272,3 +272,9 @@ git commit -am "添加build.sh可执行权限"
 # 查看文件权限
 git ls-tree HEAD .
 ```
+
+## Git: git add 时忽略文件或文件夹
+
+```bash
+git add --all -- ':!src/*'
+```

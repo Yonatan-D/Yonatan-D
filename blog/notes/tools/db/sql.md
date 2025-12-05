@@ -1,3 +1,47 @@
+## mysql> flush-hosts
+
+eggjs 报错, mysql 连不上:
+
+```bash
+ERROR 2664 nodejs.SequelizeConnectionError: Host '172.16.0.1' is blocked because of many connection errors; unblock with 'mysqladmin flush-hosts'
+```
+
+同一个ip在短时间内产生太多(超过mysql数据库max_connection_errors的最大值)中断的数据库连接而导致的阻塞
+
+解决方法:
+
+```bash
+mysql -u root -p
+
+mysql> flush-hosts;
+```
+
+排查代码中是否有地方频繁连接数据库，或者数据库连接池配置有问题
+
+## 运维导入数据库后程序启动报错：The user specified as a definer ('root'@'%') does not exist
+
+现场运维遇到一个问题“我的用户不是 root, 但执行 sql 时报错了 root 用户”，排查到原因是视图的安全性为 definer 时只能创建者才能执行, 改成 invoker 只要执行者有权限就可以执行
+
+参考：https://www.cnblogs.com/jichi/p/11972847.html
+
+## 人大金仓(kingbase)数据库把空字符串当成Null
+
+代码里有段sql是 `xxx字段<>''`，意思是查询该字段不为空字符串的记录，但是人大金仓数据库把空字符串当成Null，所以查询结果为空。
+
+复现步骤：
+
+```sql
+SELECT '' = '';
+```
+
+输出：false
+
+解决只需修改人大金仓数据库配置：
+
+```toml
+ora_input_emptystr_isnull = false
+```
+
 ## MySQL: Prepared statement needs to be re-prepared
 
 > 很简单的查询一行数据的 sql 语句就抛出异常，不清楚是否和数据库中间件最近更新的特性获取表名字段有关，暂时先通过调整 mysql 配置解决
