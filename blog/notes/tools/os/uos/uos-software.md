@@ -129,3 +129,24 @@ nvm ls
 # 设置当前 node 版本为 18
 nvm use v18.19.0
 ```
+
+## JDK
+
+```bash
+# 下载并解压
+wget https://repo.huaweicloud.com/java/jdk/8u151-b12/jdk-8u151-linux-x64.tar.gz
+sudo tar -zxvf jdk-8u151-linux-x64.tar.gz -C /usr/local/
+sudo mv /usr/local/jdk1.8.0_151 /usr/local/jdk1.8
+
+sudo vim /etc/profile
+# 添加以下内容
+export JAVA_HOME=/usr/local/jdk1.8
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+source /etc/profile
+
+# 检查是否生效
+java -version
+javac -version
+```

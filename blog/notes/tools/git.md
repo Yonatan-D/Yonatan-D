@@ -234,6 +234,33 @@ master  <-- merge --  feature
 
 ## FAQ
 
+## 找回丢失的代码
+
+```bash
+git reflog
+git reset --hard [commit-hash]
+```
+
+### 找回 git stash 丢失的代码
+
+1. 找删除记录
+
+```bash
+ git fsck --lost-found
+```
+
+2. 找到丢失的提交记录
+
+```bash
+git show [commit-hash]
+```
+
+3. 恢复丢失的提交记录
+
+```bash
+git stash apply [commit-hash]
+```
+
 ### 从 GitHub 上拉取项目中的指定目录
 
 推荐安装 TortoiseSVN 工具

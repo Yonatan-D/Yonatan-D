@@ -29,6 +29,8 @@ if (@available(iOS 10.0, *)) {
 }
 ```
 
+PS：https://github.com/apache/cordova-plugin-inappbrowser/blob/master/src/ios/CDVWKInAppBrowser.m
+
 ## iOS 18版本，APP打开微信小程序提示“由于应用universal link校验不通过”
 
 [微信OpenSDK官方说明](https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html) 如下：
@@ -42,6 +44,22 @@ if (@available(iOS 10.0, *)) {
 解决方法一：Xcode 退回 15 版本
 
 解决方法二：OpenSDK 升级到 2.0.4 版本
+
+## 微信开发者工具导出 har 文件时卡住，无法完成导出
+
+工具bug，当导出文件名为纯英文时，导出会卡住。但是将文件命名数字、数字+英文时，可以顺利导出。
+
+## 解决 NPM 安装依赖项含有 `git@github.com` 导致无法下载问题
+
+npm install 报错连不上 github.com，但官方能访问，git clone 也能正常拉取。原因是 npm 依赖项中包含 git@github.com 的地址，git 协议的默认端口是 9418，可能是我的网络环境防火墙并没有开放这个端口造成的。
+
+解决方法：
+
+```bash
+git config --global url."https://".insteadOf git://
+ 
+npm cache clean --force
+```
 
 ## [onlyoffice]: waiting for connection to the localhost host on port
 

@@ -1,3 +1,41 @@
+## Oracle：使用Impdp导入dmp文件
+
+1. 创建表空间
+
+```sql
+CREATE BIGFILE TABLESPACE MY_TEST_DATA DATAFILE'/opt/oracle/oradata/my_test/data/MY_TEST_DATA.dbf' SIZE 100G AUTOEXTEND ON NEXT 50G MAXSIZE 300G;
+
+CREATE USER my_test IDENTIFIED BY my_test
+DEFAULT TABLESPACE MY_TEST_DATA;
+
+GRANT CONNECT, RESOURCE TO my_test;
+GRANT IMP_FULL_DATABASE, EXP_FULL_DATABASE TO my_test;
+ALTER USER MY_TEST QUOTA UNLIMITED ON MY_TEST_DATA;
+```
+
+2. 导入dmp文件
+
+```bash
+impdp my_test/my_test@127.0.0.1:1521/TEST dumpfile=test%U.dmp logfile=imp_test.log full=y
+```
+
+PS: 
+
+删除用户并删除表空间：  
+
+```sql
+shutdown immediate;
+startup;
+DROP USER my_test CASCADE;
+DROP TABLESPACE MY_TEST_DATA INCLUDING CONTENTS AND DATAFILES;
+``` 
+
+先删除表再导入
+
+```bash
+impdp my_test/my_test@127.0.0.1:1521/TEST dumpfile=test%U.dmp logfile=imp_test.log full=y TABLE_EXISTS_ACTION=REPLACE
+```
+
 ## mysql> flush-hosts
 
 eggjs 报错, mysql 连不上:

@@ -19,10 +19,6 @@ ps -ef | grep xxx
 ls -l /proc/1234/cwd
 ```
 
-## windows 删除服务
-
-Win+R 输入 services.msc 打开服务，选中列表项右键属性查看服务名称，cmd执行以下命令：
-
 ```bash
 sc delete [服务名称]
 ```
@@ -109,6 +105,23 @@ history -i
 cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
 ```
 
+## 临时设置代理
+
+linux:
+
+```sh
+export HTTP_PROXY="http://ip:port"
+export HTTPS_PROXY="https://ip:port"
+```
+
+windows:
+
+```sh
+# 临时设置代理
+set http_proxy=http://ip:port
+set https_proxy=https://ip:port
+```
+
 ## Linux 注销时执行脚本，删除 history 记录
 
 每个用户登出时都清除输入的命令历史记录，可以在`.bash_logout` 文件中添加下面这行`rm -f $HOME/.bash_history` 。这样，当用户每次注销时，`.bash_history `文件都会被删除.【需谨慎，使用rm删除命令时加上-i参数让用户确认】
@@ -143,6 +156,10 @@ bindkey "\e\e" sudo-command-line
 ```bash
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime
 ```
+
+## windows 删除服务
+
+Win+R 输入 services.msc 打开服务，选中列表项右键属性查看服务名称，cmd执行以下命令：
 
 ## windows输入法不见了
 
