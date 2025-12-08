@@ -81,6 +81,20 @@ const fixRelativeUrl = (base, relative) => {
 }
 ```
 
+## .NET 的 grpc 默认是 https, 如何关掉
+
+背景：grpc 传输使用 http2 协议，http2 协议需要 https，在内网情况下我们可能不想用 https
+
+```csharp
+if (!SERVER_GRPC.StartsWith("https"))
+{
+    AppContext.SetSwitch(
+        "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+}
+```
+
+参考：[对 .NET 上的 gRPC 进行故障排除](https://learn.microsoft.com/zh-cn/aspnet/core/grpc/troubleshoot?view=aspnetcore-10.0)
+
 ## egg controller 入参改造
 
 基于 [egg-router-plus](https://github.com/eggjs/egg-router-plus) 插件的 namespace 方法拓展，改造 [proxyFn](https://github.com/eggjs/egg-router-plus/blob/cdfec8012f8e051a6b55d848cd4112191e566085/lib/router.js#L78) 函数，将 ctx.query、ctx.request.body、ctx.params 合并到第一个参数中，并将 ctx 作为第二个参数传入，return 的内容赋值给 ctx.body, 方便统一处理返回结果。这样在写 controller 时不管是 get/post 请求，都可以直接从第一个参数中解构获取到所有参数，并且在返回结果时，直接 return 即可，无需再手动赋值给 ctx.body。
@@ -130,6 +144,23 @@ egg.startCluster({
 
 [Egg.js 进程管理为什么没有选型 PM2 ？](https://www.zhihu.com/question/298718190)
 
+## egg 调试时怎么不让后端自动重启，或者说让某个文件夹里面的文件修改之后不要重启
+
+```js
+exports.development = {
+    overrideDefault: true,
+    watchDirs: [
+      'app/controller',
+      'app/service',
+      'app/view',
+    ],
+  };
+```
+
+> 参考：  
+> https://github.com/eggjs/egg/issues/669  
+> https://github.com/eggjs/egg-development/pull/13  
+> https://github.com/eggjs/egg-development/pull/13/files#diff-8
 
 ## 批量 require 指定目录下的 *.Controller.js 文件
 
@@ -319,6 +350,20 @@ arr.splice(0, arr.length)
 
 也有其它诸如 pop 循环删除的方法，各有利弊，很难选出一个写法规范且一定不会错的方法，但这里性能考虑是可以放最后的，性能问题可以等出现时再优化，也许能从其它方面做优化。最后想说倒也不必纠结，开发无银弹，如果你的场景用哪个都没啥区别，就用着一个先，等到真的有问题出现再去优化，到时候看是引用问题，性能问题，亦或是代码规范问题。
 
+## js 删除数组中的一批元素
+
+推荐用 filter、或是 for 循环将要保留的元素塞入新数组，splice 的话，因为是直接修改原数组，删除一个元素后，数组长度会变化，导致删除的元素不完整，正确做法是从数组的末尾开始迭代，避免因为删除元素而导致索引问题。
+
+splice 尾删除：
+
+```js
+for (let index = arr.length - 1; index >= 0 ; index--) {
+  if (arr[index].indexOf(val) === -1) {
+    arr.splice(index, 1);
+  }
+}
+```
+
 ## js 首字母大写
 
 ```js
@@ -360,3 +405,17 @@ const regex3 = new RegExp(/pattern/, 'flags');
 2. 字面量在代码加载时编译，构造函数在代码运行时编译
 
 3. 构造函数可以动态构建，字面量不行
+
+## css 两个50%为什么会换行
+
+默认的 box-sizing: content-box 会让元素的实际宽度 = 宽度 + 内边距 + 边框，受内边距、边框或外边距影响，导致总宽度超过 50%
+
+解决方法：
+
+1. box-sizing: border-box; 
+
+2. calc 计算宽度，例如：width: calc(50% - 10px);
+
+3. flex 布局，父元素设置 display: flex;，子元素设置 flex: 1;
+
+4. table 布局，父元素设置 display: table;，子元素设置 display: inline-block;

@@ -187,6 +187,20 @@ dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
 
 [TCP/IP 端口耗尽故障排除 - Windows Client | Microsoft Learn](https://learn.microsoft.com/zh-cn/troubleshoot/windows-client/networking/tcp-ip-port-exhaustion-troubleshooting)
 
+## 前端显示时间与数据库不一致
+
+数据库时间字段查询正常。
+
+排查服务端日志看返回的时间是否正常。该字段后端直接返回 Date 对象，不是很好的做法，改成返回字符串：
+
+```js
+if (i.expendDate.includes("T")) {
+  i.expendDate = Moment(new Date(i.expendDate)).format('YYYY-MM-DD HH:mm:ss')
+}
+```
+
+排查前端转换时间格式是否有问题。打开浏览器控制台, 输出 `JSON.stringify(new Date())`，可能是 Date 原型 的 toJSON() 方法被其它引入库给覆盖了，排查最近前端引入了哪些库。
+
 ## Vue前端项目较大，运行和编译都报错内存溢出
 
 ```
