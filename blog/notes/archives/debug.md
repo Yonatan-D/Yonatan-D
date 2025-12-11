@@ -95,7 +95,7 @@ adb shell "logcat | grep 'console :'"
 
 背景：不具备让电脑和手机连入同一网络的条件，当前电脑连接的是手机热点，该方法是通过usb调试将手机上的8888端口映射到电脑上的8888端口，然后电脑使用fiddle进行抓包
 
-1. 将手机上的 8888 端口映射到电脑上的 8888 端口
+步骤1：将手机上的 8888 端口映射到电脑上的 8888 端口
 
 ```cmd
 adb reverse tcp:8888 tcp:8888
@@ -103,16 +103,18 @@ adb reverse tcp:8888 tcp:8888
 
 > Android 允许我们通过 ADB，把 Android 设备上的某个端口映射到电脑（adb forward），或者把电脑的某个端口映射到 Android 设备（adb reverse）
 
-2. 手机访问 http://localhost:8888 下载 CA 证书并导入手机
+步骤2：手机访问 http://localhost:8888 下载 CA 证书并导入手机
 
 vivo（OriginOS 6）：设置 - 安全 - 更多安全设置 - 从手机存储安卓 - CA证书
+
+步骤3：设置代理，将手机上的所有请求都转发到电脑的 8888 端口
 
 ```cmd
 adb shell settings put global http_proxy 127.0.0.1:8888
 adb shell settings put global https_proxy 127.0.0.1:8888
 ```
 
-3. 抓包结束后，必须执行以下命令来清除代理，否则手机将无法上网
+步骤4：抓包结束后，必须执行以下命令来清除代理，否则手机将无法上网
 
 ```cmd
 adb shell settings put global http_proxy :0
