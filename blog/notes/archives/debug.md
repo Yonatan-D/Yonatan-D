@@ -8,15 +8,33 @@ F12 -> Source -> Ctrl + P 搜索文件 -> 设置断点
 
 ### 1.2 断点网络请求
 
-（1）F12 -> Source -> XHR/fetch Breakpoints -> 添加需要拦截的请求地址，可以直接填域名
+步骤1：F12 -> Source -> XHR/fetch Breakpoints -> 添加需要拦截的请求地址，可以直接填域名
 
-（2）触发请求进入断点后，可以从堆栈找到发起请求的文件，点击堆栈中的函数名可以跳转到源码处
+步骤2：触发请求进入断点后，可以从堆栈找到发起请求的文件，点击堆栈中的函数名可以跳转到源码处
 
-### 1.3 请求重发
+### 1.3 请求重发（curl）
 
-（1）F12 -> Network -> 选择需要重发的请求 -> 右键 -> Copy -> Copy as cURL
+步骤1：F12 -> Network -> 选择需要重发的请求 -> 右键 -> Copy -> Copy as cURL
 
-（2）打开命令行工具，粘贴cURL命令，然后回车，即可重新发起请求（或者导入 Postman）
+步骤2：打开命令行工具，粘贴cURL命令，然后回车，即可重新发起请求（或者导入 Postman）
+
+### 1.4 模拟微信内置浏览器环境
+
+步骤1：F12，打开 Network Conditions 面板
+
+- 点击右上角三点 → More tools → Network conditions
+
+- 取消勾选 Use browser default
+
+步骤 2：输入微信 UA
+
+```
+MicroMessenger/6.0.0.54_r849063.5015
+```
+
+仅修改 UA 无法完全模拟微信内置浏览器环境，只能辅助排查一些问题
+
+如果是公众号网页，可以使用微信开发者工具调试
 
 ## 2 在 VSCode 中进行浏览器调试
 
@@ -41,12 +59,12 @@ F12 -> Source -> Ctrl + P 搜索文件 -> 设置断点
 
 ### 3.1 简单调试JS文件
 
-VSCode 开一个 JavaScript Debug Terminal，然后输入 `node 文件路径`，就可以断点调试了。
+VSCode 开一个 JavaScript Debug Terminal，然后输入 `node JS文件路径`，就可以断点调试了。
 
-推荐使用 `nodemon 文件路径`，修改保存后可以自动重启。
+推荐使用 `nodemon JS文件路径`，修改保存后可以自动重启。
 
 ```sh
-npm i -g nodemon
+npx nodemon JS文件路径
 ```
 
 ### 3.2 使用 launch.json 文件调试
@@ -83,7 +101,11 @@ adb shell "logcat | grep 'console :'"
 adb reverse tcp:8888 tcp:8888
 ```
 
-2. 手机访问 http://localhost:8888 下载CA证书，导入证书：设置 - 安全 - 更多安全设置 - 从手机存储安卓 - CA证书
+> Android 允许我们通过 ADB，把 Android 设备上的某个端口映射到电脑（adb forward），或者把电脑的某个端口映射到 Android 设备（adb reverse）
+
+2. 手机访问 http://localhost:8888 下载 CA 证书并导入手机
+
+vivo（OriginOS 6）：设置 - 安全 - 更多安全设置 - 从手机存储安卓 - CA证书
 
 ```cmd
 adb shell settings put global http_proxy 127.0.0.1:8888
@@ -159,11 +181,9 @@ adb.exe logcat --pid=$SELECTED_PID
 
 - 支持拦截特定请求的 request 和 response
 
-  - 返回自定义数据
+  - 不转发请求，直接返回自定义数据
 
-  - 修改入参继续请求
-
-  - 修改返回数据
+  - 继续请求，修改入参或出参
 
 - 缓存接口数据，支持离线调试
 
@@ -175,7 +195,7 @@ export default async function getOrderInfo(data, { ctx, next }) {
   // 转发请求
   // return next();
 
-  // 修改入参或返回数据
+  // 修改入参或出参
   // const response = await next({ data });
   // return response;
 
@@ -209,14 +229,15 @@ export default async function customHandlerMiddleware (ctx, next) {
       return;
     }
 
-    // 是否有自定义请求处理文件，例如：request/order/getOrderInfo.js
+    // 根据请求路径，查找自定义处理文件
+    // 例如：/order/getOrderInfo -> request/order/getOrderInfo.js
     const customRequestPath = path.join('request', this.ctx.url.split('?')[0] + '.js');
     const customRequest = fs.existsSync(customRequestPath) 
                             ? (await import(filePath)).default 
                             : null;
 
     if (customRequest && typeof customRequest === 'function') {
-      // 使用自定义处理，不转发请求
+      // 使用自定义处理方法，不转发请求
       const data = { ...ctx.query, ...ctx.request.body };
       const response = await customRequest(data, { ctx, next });
       handleResponse(ctx, response);
