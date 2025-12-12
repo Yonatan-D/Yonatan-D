@@ -4,17 +4,17 @@
 
 ### 1.1 断点源码
 
-F12 -> Source -> Ctrl + P 搜索文件 -> 设置断点
+F12 → Source → Ctrl + P 搜索文件 → 设置断点
 
 ### 1.2 断点网络请求
 
-步骤1：F12 -> Source -> XHR/fetch Breakpoints -> 添加需要拦截的请求地址，可以直接填域名
+步骤1：F12 → Source → XHR/fetch Breakpoints → 添加需要拦截的请求地址，可以直接填域名
 
 步骤2：触发请求进入断点后，可以从堆栈找到发起请求的文件，点击堆栈中的函数名可以跳转到源码处
 
 ### 1.3 请求重发（curl）
 
-步骤1：F12 -> Network -> 选择需要重发的请求 -> 右键 -> Copy -> Copy as cURL
+步骤1：F12 → Network → 选择需要重发的请求 → 右键 → Copy → Copy as cURL
 
 步骤2：打开命令行工具，粘贴cURL命令，然后回车，即可重新发起请求（或者导入 Postman）
 
@@ -69,13 +69,70 @@ npx nodemon JS文件路径
 
 ### 3.2 使用 launch.json 文件调试
 
-VSCode 左侧 `Run and Debug` -> `create a launch.json file`，选择 `Node.js`，然后修改 `program` 字段为你的文件路径，就可以在 `Run and Debug` 中点击 `Start Debugging` 来调试了，或者按 `F5` 键启动调试。
+VSCode 左侧 `Run and Debug` → `create a launch.json file`，选择 `Node.js`，然后修改 `program` 字段为你的文件路径，就可以在 `Run and Debug` 中点击 `Start Debugging`或者按 `F5` 键启动调试。
 
-### 3.3 VSCode 调试 Egg
+### 3.3 VSCode 断点调试 Egg 配置
 
 https://github.com/atian25/blog/issues/25
 
-## 4 Android调试技巧
+Egg 的调试配置：
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Egg",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npm",
+      "windows": {
+        "runtimeExecutable": "npm.cmd"
+      },
+      "runtimeArgs": [
+        "run",
+        "debug",
+        "--",
+        "--inspect-brk"
+      ],
+      "console": "integratedTerminal",
+      "protocol": "auto",
+      "restart": true,
+      "port": 9229,
+      "autoAttachChildProcesses": true
+    }
+  ]
+}
+```
+
+单元测试的调试配置：
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Egg Test",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "test-local",
+        "--",
+        "--inspect-brk"
+      ],
+      "protocol": "auto",
+      "port": 9229,
+      "autoAttachChildProcesses": true,
+      "disableOptimisticBPs": false,
+    }
+  ]
+}
+```
+
+## 4 Android 调试技巧
 
 adb工具下载：https://googledownloads.cn/android/repository/platform-tools-latest-windows.zip
 
@@ -85,15 +142,15 @@ adb工具下载：https://googledownloads.cn/android/repository/platform-tools-l
 adb shell pm list packages -3
 ```
 
-### 4.2 查看uniapp的运行日志
+### 4.2 查看 uniapp 的运行日志
 
 ```shell
 adb shell "logcat | grep 'console :'"
 ```
 
-### 4.3 设置fiddle代理进行抓包
+### 4.3 通过 usb 连接电脑 用 fiddle 抓包
 
-背景：不具备让电脑和手机连入同一网络的条件，当前电脑连接的是手机热点，该方法是通过usb调试将手机上的8888端口映射到电脑上的8888端口，然后电脑使用fiddle进行抓包
+背景：不具备网络条件能同时让电脑和手机接入一个局域网。本方法是建立在电脑连接手机热点，手机插 usb 数据线连接电脑，使用 fiddle 进行抓包。由于 Android 7.0 之后默认不信任用户添加到系统的 CA 证书，调试自己的 App 需要在 App 的配置文件里设置信任，或者使用 xposed 模块来强制让 App 信任系统安装的证书，这里不展开。
 
 步骤1：将手机上的 8888 端口映射到电脑上的 8888 端口
 
