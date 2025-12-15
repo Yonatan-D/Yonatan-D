@@ -4,7 +4,7 @@
 
 ## 起因
 
-短期出行想用平板取代笨重的笔记本处理轻度办公场景，于是折腾了一番怎么把平板改造成~~生产力工具~~玩具。目前在用 Galaxy Tab 的 DeX 模式 + Termux，搭配罗技 k380 蓝牙键盘，带出门这个重量还能接受。下面是我在平板上探索如何安装 vscode 的过程。
+短期外出想用平板取代笨重的笔记本做轻度办公，折腾怎么把平板改造成~~生产力工具~~玩具，探索了一番 Android 上使用 Linux 环境及软件，最后确定 Galaxy Tab 的 DeX 模式 + Termux，搭配罗技 k380 蓝牙键盘的方案，带出门这个重量还能接受。下面是我在平板上探索如何安装 vscode 的过程。
 
 ## 踩坑过程
 
@@ -62,7 +62,7 @@ It is recommended to start vscode as a normal user.
 To run as root, you must specify an alternate user data directory with the --user-data-dir argument.
 ```
 
-改成用普通用户权限启动 vscode，编辑快捷图标的启动命令修改为：
+不推荐用 root 用户启动 vscode。我选择继续用 root 用户，编辑快捷图标的启动命令修改为：
 
 ```bash
 /usr/bin/code --no-sandbox --unity-launch
