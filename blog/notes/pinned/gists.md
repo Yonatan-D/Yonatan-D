@@ -222,6 +222,23 @@ route add 0.0.0.0 mask 0.0.0.0 <外网网关> metric 22 -p
 route print
 ```
 
+## powershell脚本启动网卡
+
+```ps1
+# 检查是否已经以管理员权限运行
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+
+# 如果不是管理员权限，则尝试以管理员权限运行
+if (-not $isAdmin) {
+    Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$PSCommandPath`"" -Verb RunAs -Wait
+    Exit
+}
+
+# 在这里添加你的命令
+netsh interface set interface "网卡名称" enable # 开启网卡
+# netsh interface set interface "网卡名称" disabled # 关闭网卡
+```
+
 ## 快速启动本地服务
 
 有2个工具：http-server，anywhere

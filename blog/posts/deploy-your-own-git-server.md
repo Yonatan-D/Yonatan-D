@@ -6,13 +6,9 @@
 gitlab-ce (官方 docker 镜像)：https://docs.gitlab.com/ee/install/docker.html  
 gitlab-ce-zh (第三方汉化 docker 镜像)：https://github.com/twang2218/gitlab-ce-zh
 
-
-
 ## 前言
 
-公司内部不想把产品代码托管在公网上的 Github、Gitee，要求使用私有仓库，于是便在局域网内搭建 Git 私服。我们团队选择使用 GitLab，它是目前最流行且功能齐全的方案，集成了 CI/CD，提供了开箱即用的 Docker 镜像。
-
-
+公司产品代码不能托管在公网上的代码仓库，只允许托管在内网自建 Git 服务器。由于旧的 Git 私服主机性能已经很慢了，老大决定迁出代码仓库，也让其他团队搭建自己的 Git 私服各自管理。经过技术选型我们选择使用 GitLab，它是目前最流行且功能齐全的方案，集成有 CI/CD，提供了开箱即用的 Docker 镜像。
 
 ## 安装
 
@@ -31,22 +27,20 @@ gitlab-ce-zh (第三方汉化 docker 镜像)：https://github.com/twang2218/gitl
 
 那么，下面开始吧~
 
-
-
 ### 使用 Docker 命令启动
 
 ```sh
-$|docker run -d \
-    --name gitlab \
-    --restart always \
-    -p 8080:8080 \
-    -p 8081:443 \
-    -p 8082:22 \
-    -v /home/dockerapps/gitlab/config:/etc/gitlab \
-    -v /home/dockerapps/gitlab/data:/var/opt/gitlab \
-    -v /home/dockerapps/gitlab/logs:/var/log/gitlab \
-    --env GITLAB_OMNIBUS_CONFIG="external_url 'http://192.168.0.1:8080';" \
-    twang2218/gitlab-ce-zh:11.1.4
+docker run -d \
+  --name gitlab \
+  --restart always \
+  -p 8080:8080 \
+  -p 8081:443 \
+  -p 8082:22 \
+  -v /home/dockerapps/gitlab/config:/etc/gitlab \
+  -v /home/dockerapps/gitlab/data:/var/opt/gitlab \
+  -v /home/dockerapps/gitlab/logs:/var/log/gitlab \
+  --env GITLAB_OMNIBUS_CONFIG="external_url 'http://192.168.0.1:8080';" \
+  twang2218/gitlab-ce-zh:11.1.4
 ```
 
 运行后，浏览器访问 http://192.168.0.1:8080，首次登录必须设置管理员(root)密码。
@@ -66,59 +60,52 @@ gitlab
 
 **下面是关于命令的一些说明。**
 
-> 你可能会注意到，为什么是宿主机映射到容器内部的是 8080 端口，而不是文档上说的 80 端口？
->
-> ```bash
-> # 【错误示例】为什么不是映射到 80 端口？
-> -p 8080:80
-> ```
->
-> 因为使用非 80 端口时，主机和容器的端口要一致，否则会出错！[点此看官方文档说明](https://docs.gitlab.com/ee/install/docker.html#expose-gitlab-on-different-ports)
->
-> ```bash
-> # 【正确示例】必须都是 8080 端口！
-> -p 8080:8080
-> ```
->
-> 同时，也要和 `external_url` 设置的端口一致才能生效。因为这一步我已经通过 `--env GITLAB_OMNIBUS_CONFIG` 传入配置了，所以不需要在启动后手动去修改配置文件。
->
-> 
->
-> 这里留个记录，在宿主机修改配置文件的步骤：
->
-> 编辑文件 `/home/dockerapps/gitlab/config/gitlab.rb` ，设置 `external_url` 的值：
->
-> ```bash
-> # For HTTP
-> external_url "http://192.168.0.1:8080"
-> ```
->
-> 如果要修改 HTTPS(443) 和 SSH(22) 默认端口也是一样的：
->
-> ```bash
-> # For HTTPS(443)
-> # 先指定映射端口 -p 8081:8081
-> external_url "https://192.168.0.1:8081"
-> 
-> # For SSH(22)
-> # 先指定映射端口 -p 8082:8082，再设置 gitlab_shell_ssh_port
-> gitlab_rails['gitlab_shell_ssh_port'] = 8082
-> ```
->
-> 最后，让容器内的 gitlab 重载配置：
->
-> ```bash
-> docker exec -it gitlab gitlab-ctl reconfigure
-> ```
->
+?> 你可能会注意到，为什么是宿主机映射到容器内部的是 8080 端口，而不是文档上说的 80 端口？
 
+```bash
+# 【错误示例】为什么不是映射到 80 端口？
+-p 8080:80
+```
 
+因为使用非 80 端口时，主机和容器的端口要一致，否则会出错！[点此看官方文档说明](https://docs.gitlab.com/ee/install/docker.html#expose-gitlab-on-different-ports)
+
+```bash
+# 【正确示例】必须都是 8080 端口！
+-p 8080:8080
+```
+
+同时，也要和 `external_url` 设置的端口一致才能生效。因为这一步我已经通过 `--env GITLAB_OMNIBUS_CONFIG` 传入配置了，所以不需要在启动后手动去修改配置文件。
+
+这里留个记录，在宿主机修改配置文件的步骤：
+
+编辑文件 `/home/dockerapps/gitlab/config/gitlab.rb` ，设置 `external_url` 的值：
+
+```bash
+# For HTTP
+external_url "http://192.168.0.1:8080"
+```
+
+如果要修改 HTTPS(443) 和 SSH(22) 默认端口也是一样的：
+
+```bash
+# For HTTPS(443)
+# 先指定映射端口 -p 8081:8081
+external_url "https://192.168.0.1:8081"
+ 
+# For SSH(22)
+# 先指定映射端口 -p 8082:8082，再设置 gitlab_shell_ssh_port
+gitlab_rails['gitlab_shell_ssh_port'] = 8082
+```
+
+最后，让容器内的 gitlab 重载配置：
+
+```bash
+docker exec -it gitlab gitlab-ctl reconfigure
+```
 
 ### 使用 Docker Compose
 
-相比命令方式，使用配置文件更方便管理。
-
-新建 docker-compose.yml，内容如下：
+相比命令方式，使用配置文件更方便管理。docker-compose.yml 内容如下：
 
 ```yaml
 version: '2'
@@ -142,20 +129,6 @@ services:
       - /home/dockerapps/gitlab/logs:/var/log/gitlab
 ```
 
-启动服务：
-
-```bash
-docker-compose up -d
-```
-
-停止服务：
-
-```bash
-docker-compose down
-```
-
-
-
 ## 备份
 
 使用 gitlab-rake 备份数据：
@@ -174,8 +147,6 @@ $|gitlab-rake gitlab:backup:create
 
 - /home/git/gitlab/config/secrets.yml
 
-
-
 ## 恢复
 
 恢复备份前，先停止 gitlab 服务：
@@ -191,8 +162,6 @@ $|gitlab-ctl stop
 ```sh
 $|gitlab-rake gitlab:backup:restore BACKUP=1597188417_2020_08_11_12.10.5
 ```
-
-
 
 ## 资源限制
 
@@ -215,6 +184,6 @@ prometheus_monitoring['enable'] = false
 docker exec -it gitlab gitlab-ctl reconfigure
 ```
 
-> `prometheus_monitoring['enable'] = false` 是把 Prometheus 给关了，但关闭后也可以选择使用外部 Prometheus。gitlab 服务器已经包含了node-exporter 服务，接口是 http://ip:9100/metrics ，想要在外部使用还必须先改一项配置，打开 `/home/dockerapps/gitlab/data/embedded/cookbooks/monitoring/attributes/default.rb` ，把 localhost:9100 改成 0.0.0.0:9100，然后重载配置 gitlab-ctl reconfigure
+?> **prometheus_monitoring['enable'] = false** 是把 Prometheus 给关了，但关闭后也可以选择使用外部 Prometheus。gitlab 服务器已经包含了node-exporter 服务，接口是 http://ip:9100/metrics ，想要在外部使用还必须先改一项配置，打开 /home/dockerapps/gitlab/data/embedded/cookbooks/monitoring/attributes/default.rb，把 localhost:9100 改成 0.0.0.0:9100，然后重载配置 gitlab-ctl reconfigure
 
-因为 gitlab 使用体验不错，于是我也给自己搭建了个人代码库。实测，资源限制后在我的 1 核 2 G云服务器上跑了宝塔面板和 gitlab 服务，还有 10% 左右可用内存。不过我用不到太多功能，后来我替换成 gitea，可用内存多出了 30%。
+PS：我也在自己的小主机上部了一个自用的。实测，资源限制后在我的 1 核 2G 云服务器上跑了宝塔面板和 gitlab 服务，还有 10% 左右可用内存。后来我换成更轻量的 [gitea](/posts/gitea-install-dump-restore) 释放多 30% 可用内存。
