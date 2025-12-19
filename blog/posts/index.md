@@ -2,6 +2,8 @@
 
 ## 2025
 
+* 2025-12-19 [解决 iOS 中文输入混乱问题：空格过滤引发的血案](./posts/iOS-confusing-chinese-input)
+
 * 2025-02-25 [让 windows terminal 更好用](./posts/make-windows-terminal-better)
 
 ## 2024
