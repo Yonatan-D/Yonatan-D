@@ -1,20 +1,27 @@
-# 解决 iOS 中文输入混乱问题：空格过滤引发的血案
+# React 受控组件与 iOS 输入法的冲突及解决方案
 
-接到报障反馈 APP 修改昵称不能输入中文且输入框内的拼音叠加问题，Android 端正常，iOS 端异常。
+## 问题描述
 
-排查问题：
+用户反馈在 iOS 上不能输入中文，无法通过点击候选词上屏，且输入框内拼音会重复叠加。
 
- - 输入框限制文本长度为 6，当输入拼音超过 6 位时选词就无法填入
- 
- - 输入框 change 事件过滤空格，iOS 以空格分隔拼音，空格过滤后没办法正确分词，造成中文输入混乱
+经排查，问题原因如下：
 
+1. 长度限制：输入框最大长度为 6。iOS 原生键盘在中文输入未选词时会先将拼音填入，当拼音长度超过 6 时，选词功能失效。
 
-有问题的代码：
+2. 字符叠加：输入过程中存在内容重复问题，如输入 "gh" 时，由于频繁触发 onChange 事件去消除输入的空格并赋值回去，导致输入框错误地显示为 "ghgh"。这又加剧了选词功能失效的问题。
+
+所以要解决的问题是为什么在输入拼音时，onChange 事件会频繁触发？
+
+## 最小可复现代码：
 
 ```jsx
 /*react*/
 <desc>
+### 复现步骤
 
+1. 使用 iOS 原生键盘的中文输入法
+
+2. 受控组件的 onChange 事件中异步设置 value，并且 value 的值是过滤空格的
 </desc>
 <script>
   export default class LimitedInput extends React.Component {
@@ -28,7 +35,7 @@
 
     handleChange = (e) => {
       this.setState({
-        value: e.target.value.replace(/\s/g, ''),
+        value: e.target.value.replace(/\s/g, ''), // 过滤空格
         changedValue: e.target.value
       })
     }
@@ -41,7 +48,7 @@
           </p>
           <input
             type="text"
-            maxLength={6}
+            maxLength={6} // 限制文本长度为 6
             value={this.state.value}
             onChange={this.handleChange}
           />
@@ -52,13 +59,45 @@
 </script>
 ```
 
-修复后的代码：
+## 原因
+
+受控组件对 onChange 事件的响应时机 与 [输入法 (IME)](https://developer.mozilla.org/zh-CN/docs/Glossary/Input_method_editor) 的输入行为 存在冲突。
+
+关键触发条件：此问题仅在 `拼音输入过程会实时填充输入框` 的输入法中出现。iOS 原生键盘和 Arch Linux 下的 Fcitx5 (Rime) 均属于此类，因此都能触发 Bug（尽管具体表现略有不同）。而搜狗等输入法在输入拼音时，候选词悬浮于输入框之上，不会触发此问题。
+
+中文输入法在输入拼音时，会频繁触发 onChange 事件，这并非 React 特有问题，而是业界普遍存在的现象（可参考社区讨论 [Change event fires extra times before IME composition ends](https://github.com/facebook/react/issues/3926)）。
+
+iOS 原生键盘在输入拼音时，会直接将拼音字母（如 nihao）填入输入框，并用空格分隔音节。当我们的受控组件在 onChange 回调中（例如，为了过滤非法字符）处理了这些中间状态的拼音时，就破坏了输入法预期的状态，导致无法正确分词和选词。输入框内容叠加问题，也是因为对中间状态的错误处理所致。
+
+兼容这类输入法的做法是，在输入法预期状态改变时，不处理输入框内容，而是等到输入法实际完成输入时再处理。具体就是 onChange 事件中判断是否处于输入法预期状态，如果是，则不做数据处理，直接 setState，再在 onCompositionEnd 事件中对最终结果进行处理。
+
+**受控输入框与非受控输入框**
+
+受控输入框：通过 value 属性绑定值，onChange 事件处理用户输入，setState 更新 value 属性，从而控制输入框的值
+
+非受控输入框：不传 value，不控制输入框的值，因此不会触发这个 Bug
+
+**CompositionEvent 组合输入事件**
+
+> DOM 接口 **`CompositionEvent`** 表示用户间接输入文本（如使用输入法）时发生的事件。此接口的常用事件有 [compositionstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionstart_event), [compositionupdate](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionupdate_event) 和 [compositionend](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionend_event)
+
+- **compositionstart: 组合输入开始**。如：当拼音输入法开始输入时触发
+ 
+- **compositionend: 组合输入结束**。如：当拼音输入法选择候选字后触发
+
+其它情况：输入日文或韩文、手写识别、语音识别...
+
+## 修复后的代码：
 
 ```jsx
 /*react*/
 <desc>
-1. 使用 onCompositionStart 和 onCompositionEnd 事件
+### 解决思路
+
+1. 使用 onCompositionStart 和 onCompositionEnd 事件兼容 iOS 的中文输入法
+
 2. 在触发 onChange 的时候，判断是否处于 composition，如果是，则不做数据处理，直接 setState
+
 3. 在 onCompositionEnd 事件中处理字符，如：限制输入字符的最大长度
 </desc>
 <script>
@@ -67,11 +106,12 @@
       super(props)
       this.state = {
         value: '',
-        isComposition: false,
+        isComposition: false, // 正在输入中文
       }
     }
 
     handleChange = (e) => {
+      // 如果正在输入中文，则不过滤空格
       this.setState({ 
         value: this.state.isComposition
           ? e.target.value

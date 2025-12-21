@@ -76,4 +76,4 @@ alias code="/usr/bin/code --no-sandbox --unity-launch"
 
 ### Process completed (signal 9)
 
-另外，在使用 VNC 连接图形界面过程中，经常发生进程奔溃，我查到此问题会发生在 Android 12 下的 Termux。参考自 [Termux "Process completed (signal 9)" 错误解决方式](https://www.bilibili.com/video/BV1aZ4y1C73E)。（也可以看我的另一篇文章 [Termux "Process completed (signal 9)" 的免连接电脑解决方式](/posts/resolving-termux-signal-9-with-wireless-debugging)）
+另外，在使用 VNC 连接图形界面过程中，经常发生进程奔溃，我查到此问题会发生在 Android 12 下的 Termux。参考自 [Termux "Process completed (signal 9)" 错误解决方式](https://www.bilibili.com/video/BV1aZ4y1C73E)。（也可以看我的另一篇文章 [Termux "Process completed (signal 9)" 的免连接电脑解决办法](/posts/resolving-termux-signal-9-with-wireless-debugging)）

@@ -1,4 +1,4 @@
-# Termux "Process completed (signal 9)" 的免连接电脑解决方式
+# Termux "Process completed (signal 9)" 的免连接电脑解决办法
 
 {docsify-my-updater}
 

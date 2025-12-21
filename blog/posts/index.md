@@ -2,7 +2,7 @@
 
 ## 2025
 
-* 2025-12-19 [解决 iOS 中文输入混乱问题：空格过滤引发的血案](./posts/iOS-confusing-chinese-input)
+* 2025-12-19 [React 受控组件与 iOS 输入法的冲突及解决方案](./posts/iOS-confusing-chinese-input)
 
 * 2025-02-25 [让 windows terminal 更好用](./posts/make-windows-terminal-better)
 
@@ -12,7 +12,7 @@
 
 ## 2023
 
-* 2023-10-02 [Termux "Process completed (signal 9)" 的免连接电脑解决方式](./posts/resolving-termux-signal-9-with-wireless-debugging)
+* 2023-10-02 [Termux "Process completed (signal 9)" 的免连接电脑解决办法](./posts/resolving-termux-signal-9-with-wireless-debugging)
 
 * 2023-08-08 [Gitea 的安装、备份与恢复](./posts/gitea-install-dump-restore)
 
