@@ -25,7 +25,7 @@ vim /etc/docker/daemon.json
 
 daemon.json 文件配置说明：
 
-- `registry-mirrors` : 设置 docker 中国区官方镜像加速
+- `registry-mirrors` : 配置镜像源来加速镜像拉取。[DockerHub国内镜像加速源列表](https://github.com/dongyubin/DockerHub)
 
 - `log-driver` : 设置 docker 日志驱动为 json-file
 
