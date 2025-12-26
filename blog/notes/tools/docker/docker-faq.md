@@ -43,6 +43,8 @@ vim /etc/docker/daemon.json
 }
 ```
 
+!> 19.x 版本后弃用 `graph` 属性，使用 `data-root` 属性
+
 6. 重载 docker 服务
 
 ```bash

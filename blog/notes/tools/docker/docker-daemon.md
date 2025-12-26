@@ -17,7 +17,7 @@ vim /etc/docker/daemon.json
     "max-file": "3"
   },
   "bip": "172.18.0.1/16"
-  // "graph": "/home/docker"
+  // "graph": "/home/docker" // 19.x 版本后已废弃，改为 "data-root"
 }
 ```
 
@@ -33,7 +33,7 @@ daemon.json 文件配置说明：
 
 - `bip` : 设置 docker 网桥的 IP 地址段，默认是 172.17.0.1/16。避免和内网服务器 IP 地址冲突
 
-- `graph` : 设置 docker 数据文件存放位置，默认是 /var/lib/docker。建议安装 docker 后马上设置
+- ~~`graph`~~  `data-root` : 设置 docker 数据文件存放位置，默认是 /var/lib/docker。建议安装 docker 后马上设置
 
 3. 重启 docker 服务
 
@@ -45,5 +45,5 @@ systemctl restart docker
 4. 验证配置是否成功
 
 ```bash
-docker info
+docker info | grep "Docker Root Dir"
 ```
