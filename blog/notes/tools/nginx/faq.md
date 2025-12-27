@@ -60,28 +60,56 @@ auth_basic "输入使用密码";
 auth_basic_user_file /usr/local/nginx/conf/htpasswd;
 ```
 
-## 禁用缓存
+创建密码文件：
 
-```nginx
-add_header Cache-Control "no-cache, no-store"
-```
+方式1：在线生成工具：https://tool.oschina.net/htpasswd
 
-在线生成工具：https://tool.oschina.net/htpasswd
-
-本地生成密码：
+方式2：本地生成密码：
 
 ```sh
+# 使用 Apache 提供的 htpasswd 工具
 # centos: yum install httpd-tools
 # unbutun: apt-get install httpd 提示选择一个(只测试过选择apache2可用)apt-get install apache2
-htpasswd -c [source] username
-New password:
-Re-type new password:
-Adding password for user coderschool
+# 以下是创建用户名为 admin，密码为 12345 的示例
+htpasswd -c /usr/local/nginx/conf/htpasswd admin
+# 输入密码 12345
+
+# 或者使用 openssl 工具：
+openssl passwd 12345
+# 输出示例：fIHcRVEKijgoM
+# 将用户名和加密密码写入文件
+echo "admin:fIHcRVEKijgoM" > /usr/local/nginx/conf/htpasswd
 
 # htpasswd文件长这样：
 # username:password 可添加多个
 # username:password:comment
 # 例如：admin:$apr1$ubbz6W1b$QmPKpJmUEEBZuVxtc5c.G1 <- 使用htpasswd生成的
+```
+
+可以使用 curl 命令行工具测试基本认证：
+
+```sh
+curl -u admin:12345 http://127.0.0.1
+```
+
+<text class="warn">
+
+发现一个工具：staticrypt
+
+https://github.com/robinmoisson/staticrypt
+
+```sh
+npm install staticrypt
+
+staticrypt test.html -p <long-password>
+```
+
+</text>
+
+## 禁用缓存
+
+```nginx
+add_header Cache-Control "no-cache, no-store"
 ```
 
 ## nginx 搭建下载服务器
