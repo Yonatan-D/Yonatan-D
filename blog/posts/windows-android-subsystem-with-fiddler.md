@@ -1,4 +1,20 @@
-# Windows 11 安装 Android 子系统并使用 fiddler 抓包教程
+# Windows 11 安装 Android 子系统并使用 Fiddler 抓包教程
+
+碎碎念... 
+
+如今高版本 Android 抓包没有 iOS 方便，得有 root 权限，而这一步前要先解 BL 锁，因为不想对主力机做“破坏性”的操作，我探索了下其它方案：
+
+- 方案1：安卓模拟器（雷电、MuMu）
+
+- 方案2：Linux 下的 Waydroid
+
+- 方案3：Windows 下的 Android 子系统（WSA）
+
+- 方案4：基于 WSA 的腾讯应用宝
+
+除了方案1，我不想搞模拟器那么“重”和“割裂”，后面三种我都尝试了，方案3是我认为目前最好用的 Windows 系统下的方案
+
+下面是我摸索出来的操作步骤，供参考：
 
 1. 安装 Windows 11 安卓子系统
 
@@ -33,9 +49,11 @@ adb shell settings put global https_proxy :0
 
 现在就可以使用 fiddler 来抓包了。
 
-> 参考教程（好文！收藏！推荐！）：
-> [MustardChef/WSABuilds RECOMMENDED FIX](https://github.com/MustardChef/WSABuilds/issues/593#issuecomment-3172749449)
-> [Windows 11 安卓子系统安装教程](https://www.jianeryi.com/1326.html)
-> [WSA 2.0？应用宝root并安装Magisk、GMS谷歌商店教程](https://zhuanlan.zhihu.com/p/1927406354584282919)
-> [win11中wsa使用fiddler抓包（https）](https://blog.csdn.net/lswandt/article/details/121821915)
-> [miui12使用Magisk 把fidder证书添加到系统证书目录](https://github.com/ys1231/MoveCertificate/releases)
+> 参考教程：  
+> [MustardChef/WSABuilds RECOMMENDED FIX](https://github.com/MustardChef/WSABuilds/issues/593#issuecomment-3172749449)  
+> [Windows 11 安卓子系统安装教程](https://www.jianeryi.com/1326.html)  
+> [WSA 2.0？应用宝root并安装Magisk、GMS谷歌商店教程](https://zhuanlan.zhihu.com/p/1927406354584282919)  
+> [win11中wsa使用fiddler抓包（https）](https://blog.csdn.net/lswandt/article/details/121821915)  
+> [miui12使用Magisk 把fidder证书添加到系统证书目录](https://github.com/ys1231/MoveCertificate/releases)  
+> 
+> 好文收藏！
