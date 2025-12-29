@@ -150,7 +150,7 @@ adb shell "logcat | grep 'console :'"
 
 ### 4.3 通过 usb 连接电脑 用 fiddle 抓包
 
-背景：不具备网络条件能同时让电脑和手机接入一个局域网。本方法是建立在电脑连接手机热点，手机插 usb 数据线连接电脑，使用 fiddle 进行抓包。由于 Android 7.0 之后默认不信任用户添加到系统的 CA 证书，调试自己的 App 需要在 App 的配置文件里设置信任，或者使用 xposed 模块来强制让 App 信任系统安装的证书，这里不展开。
+背景：不具备网络条件能同时让电脑和手机接入一个局域网。本方法是建立在电脑连接手机热点，手机插 usb 数据线连接电脑，使用 fiddle 进行抓包。由于 Android 7.0 之后默认不信任用户添加到系统的 CA 证书，调试自己的 App 需要在 App 的配置文件里设置信任，或者使用 xposed 模块来强制让 App 信任系统安装的证书，这里不展开。或者看下这篇教程也许对你有启发：[Windows 11 安装 Android 子系统并使用 fiddler 抓包教程](/posts/windows-android-subsystem-with-fiddler)
 
 步骤1：将手机上的 8888 端口映射到电脑上的 8888 端口
 
@@ -162,7 +162,7 @@ adb reverse tcp:8888 tcp:8888
 
 步骤2：手机访问 http://localhost:8888 下载 CA 证书并导入手机
 
-vivo（OriginOS 6）：设置 - 安全 - 更多安全设置 - 从手机存储安卓 - CA证书
+vivo（OriginOS 6）：设置 - 安全 - 更多安全设置 - 从手机存储安装 - CA证书
 
 步骤3：设置代理，将手机上的所有请求都转发到电脑的 8888 端口
 

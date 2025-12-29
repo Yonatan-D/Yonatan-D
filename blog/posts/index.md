@@ -2,6 +2,8 @@
 
 ## 2025
 
+* 2025-12-29 [Windows 11 安装 Android 子系统并使用 fiddler 抓包教程](./posts/windows-android-subsystem-with-fiddler)
+
 * 2025-12-19 [React 受控组件与 iOS 输入法的冲突及解决方案](./posts/iOS-confusing-chinese-input)
 
 * 2025-02-25 [让 windows terminal 更好用](./posts/make-windows-terminal-better)
