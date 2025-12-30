@@ -41,6 +41,8 @@
 
 ##### 5. 连接 adb 调试
 
+更多信息可参阅[此教程](/notes/debug?id=_43-通过-usb-连接电脑-用-fiddle-抓包)
+
 ```bash
 # 设置 fiddler 代理
 adb reverse tcp:8888 tcp:8888
