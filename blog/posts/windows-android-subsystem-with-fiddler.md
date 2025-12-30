@@ -6,11 +6,11 @@
 
 - 方案1：安卓模拟器（雷电、MuMu）
 
-- 方案2：Linux 下的 Waydroid
+- 方案2：Linux 下的 Waydroid（Arch 可看[此教程↗](https://wiki.archlinuxcn.org/wiki/Waydroid)）
 
-- 方案3：Windows 下的 Android 子系统（WSA）
+- 方案3：Windows 下的 Android 子系统（Windows Subsystem for Android，简称 WSA）
 
-- 方案4：基于 WSA 的腾讯应用宝
+- 方案4：基于 WSA 的腾讯应用宝（已接入微软商城）
 
 除了方案1，我不想搞模拟器那么“重”和“割裂”，后面三种我都尝试了，方案3是我认为目前最好用的解决方案。
 
