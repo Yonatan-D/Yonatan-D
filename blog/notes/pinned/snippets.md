@@ -33,26 +33,70 @@ function wxProxy(wx) {
 
 ```js
 // 页面访问开始轮询
-startPolling()
+startPolling();
 
-// 监听切换标签页，显示时开始轮询，隐藏时停止轮询
-window.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible')
-    startPolling()
-  if (document.visibilityState === 'hidden')
-    stopPolling()
+// 监听标签页可见性变化
+window.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    startPolling();
+  } else {
+    stopPolling();
+  }
 })
 
-// 监听网页聚焦，没有开始轮询就开始
-window.addEventListener('focus', () => {
-  if (noStartPolling)
-    startPolling()
-})
+// 页面关闭时停止轮询
+window.addEventListener('beforeunload', stopPolling);
+window.addEventListener('pagehide', stopPolling);
 
-// 监听网页失焦，停止轮询
-window.addEventListener('blur', () => {
-  stopPolling()
-})
+// 实现轮询方法
+let pollingTimer = null;
+let abortController = null;
+
+const startPolling = async () => {
+  if (document.visibilityState === 'hidden') return;
+
+  try {
+    abortController?.abort();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    const response = await fetch('/api/check-update', { signal });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.update) {
+      if (confirm('检测到新版本，是否立即刷新页面？')) {
+        window.location.reload();
+      }
+    }
+  } catch (err) {
+    // 只有非手动取消的错误才打印日志
+    if (err.name !== 'AbortError') {
+      console.error('Polling error:', err);
+    }
+  } finally {
+    if (document.visibilityState === 'visible') {
+      pollingTimer = setTimeout(startPolling, 3000);
+    }
+  }
+}
+
+const stopPolling = () => {
+  // 清除定时器
+  if (pollingTimer) {
+    clearTimeout(pollingTimer);
+    pollingTimer = null;
+  }
+  // 取消进行中的请求
+  if (abortController) {
+    abortController.abort();
+    abortController = null;
+  }
+}
 ```
 
 ## 前端使用 Path.join: 用JavaScript实现node.js中的path.join方法
