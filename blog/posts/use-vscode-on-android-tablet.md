@@ -2,6 +2,8 @@
 
 {docsify-my-updater}
 
+?> 2026-01-04 更新：不追求 vscode 的体验，可以看下这个编辑器 [Xed-Editor](https://github.com/Xed-Editor/Xed-Editor)，使用下来感觉不赖。来自 HelloGitHub 的介绍：适用于 Android 的代码编辑器。这是一款开源的 Android 文本与代码编辑器，内置 Termux 终端可运行 Python 和 Node.js，支持 200+ 编程语言语法高亮、自动缩进和文件管理等功能。
+
 ## 起因
 
 短期外出想用平板取代笨重的笔记本做轻度办公，折腾怎么把平板改造成~~生产力工具~~玩具，探索了一番 Android 上使用 Linux 环境及软件，最后确定 Galaxy Tab 的 DeX 模式 + Termux，搭配罗技 k380 蓝牙键盘的方案，带出门这个重量还能接受。下面是我在平板上探索如何安装 vscode 的过程。
