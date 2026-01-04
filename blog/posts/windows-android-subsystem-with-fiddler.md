@@ -14,7 +14,7 @@
 
 - 方案4：基于 WSA 的腾讯应用宝（已接入微软商城，左侧工具栏多了个应用宝的导航，搜索 APP 图标上也有个应用宝的 logo）
 
-除了方案1，我不想搞模拟器那么“重”和“割裂”，后面三种我都尝试了，方案3是我认为目前最好用的解决方案。
+除了方案1，我不想搞模拟器那么“重”和“割裂”，后面三种我都尝试了，方案3是我认为目前最好用的解决方案。虽然微软已经停止对 WSA 提供支持，但民间版 WSA 依然可以正常使用 —— [WSABuilds](https://github.com/MustardChef/WSABuilds)。
 
 ## 下面是我摸索出来的操作步骤：
 
@@ -24,8 +24,6 @@
 
 下载地址：[WSA_2407.40000.4.0_x64_Release-Nightly-with-magisk-29.0.29000.-stable-NoGApps-NoAmazon.7z](https://github.com/MustardChef/WSABuilds/releases/download/Windows_11_2407.40000.4.0_LTS_7/WSA_2407.40000.4.0_x64_Release-Nightly-with-magisk-29.0.29000.-stable-NoGApps-NoAmazon.7z)
 
-
-> 项目地址：https://github.com/MustardChef/WSABuilds
 
 ##### 2. 安装 WSA 工具箱
 
