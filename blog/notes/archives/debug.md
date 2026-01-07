@@ -231,18 +231,21 @@ adb.exe logcat --pid=$SELECTED_PID
 
 ## 5 写一个请求代理工具
 
-?> 解决我自己痛点的一个小工具，会考虑开源：[web-debugging-proxy-devtools](https://gitee.com/yonatan/web-debugging-proxy-devtools.git)【WIP】  
+?> 解决我自己痛点的一个小工具。启发于 Fiddler/Charles 抓包软件，设置断点去修改请求体或响应体。在调试前端页面时，可以灵活的修改数据而不是去修改代码，而自己写一个可以做更自由的条件判断。也经常遇到开发环境接口服务挂了，想要缓存接口历史数据，方便调试，不用手动去构造数据。也许会开源：[web-debugging-proxy-devtools](https://gitee.com/yonatan/web-debugging-proxy-devtools.git)【WIP】  
+市面上有很多类似的工具，比如：[Reqable](https://reqable.com/)、[Requestly](https://requestly.com/)
 
 
 特性：
 
 - 默认转发全部请求
 
-- 支持拦截特定请求的 request 和 response
+- 支持拦截请求，设置断点和重写
 
-  - 不转发请求，直接返回自定义数据
+  - 重定向请求
 
-  - 继续请求，修改入参或出参
+  - 替换请求体和响应体
+
+  - 修改请求体和响应体
 
 - 缓存接口数据，支持离线调试
 
