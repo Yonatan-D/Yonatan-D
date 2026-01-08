@@ -62,3 +62,4 @@ adb shell settings put global https_proxy :0
 > [WSA 2.0？应用宝root并安装Magisk、GMS谷歌商店教程](https://zhuanlan.zhihu.com/p/1927406354584282919)  
 > [win11中wsa使用fiddler抓包（https）](https://blog.csdn.net/lswandt/article/details/121821915)  
 > [miui12使用Magisk 把fidder证书添加到系统证书目录](https://github.com/ys1231/MoveCertificate/releases)  
+> 2026.01.08补充：偶然发现这篇教程写的就是我想说的，操作步骤也比我写的详细，推荐看看 - [通过 WSA 抓取 android 的 https 网络请求包](https://blog.xenori.com/2023/05/capture-android-https-network-packet-with-wsa/)
