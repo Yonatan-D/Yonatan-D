@@ -1,6 +1,6 @@
 # Windows 11 安装 Android 子系统并使用 Fiddler 抓包教程
 
-{docsify-my-updater}
+{docsify-my-updater date:2025-12-29}
 
 碎碎念... 如今高版本 Android 抓包没有 iOS 方便，需要获取 root 权限，再安装 xposed 或 Magisk 将 Fiddler 证书添加到系统证书目录，才能抓包，而在这之前得先解 BL 锁。
 

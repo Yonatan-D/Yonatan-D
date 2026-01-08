@@ -1,6 +1,6 @@
 # Gitea 的安装、备份与恢复
 
-{docsify-my-updater}
+{docsify-my-updater date:2023-08-08}
 
 ## 安装
 

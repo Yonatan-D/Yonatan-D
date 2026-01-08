@@ -1,6 +1,6 @@
 # 内网服务器搭建 GitLab 代码仓库
 
-{docsify-my-updater}
+{docsify-my-updater date:2023-05-15}
 
 ?> 参考资料：  
 gitlab-ce (官方 docker 镜像)：https://docs.gitlab.com/ee/install/docker.html  

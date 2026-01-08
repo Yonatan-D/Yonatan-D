@@ -1,6 +1,6 @@
 # Termux "Process completed (signal 9)" 的免连接电脑解决办法
 
-{docsify-my-updater}
+{docsify-my-updater date:2023-10-02}
 
 该方法适用于 Android 11 及以上版本。无需连接电脑。
 
