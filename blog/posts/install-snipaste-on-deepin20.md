@@ -1,6 +1,6 @@
-# Deepin 20.9 安装 Snipaste 截图工具
-
 {docsify-my-updater date:2024-06-29}
+
+# Deepin 20.9 安装 Snipaste 截图工具
 
 Snipaste Linux 公测版 (AppImage): v2.9-Beta (2024.04.24)，在 Deepin 20 上双击执行没有反应，说下我的解决办法。
 

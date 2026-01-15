@@ -1,6 +1,6 @@
-# 在安卓平板（Galaxy Tab S7）上使用 vscode
-
 {docsify-my-updater date:2023-07-02}
+
+# 在安卓平板（Galaxy Tab S7）上使用 vscode
 
 ?> 2026-01-04 更新：不追求 vscode 的体验，可以看下这个编辑器 [Xed-Editor](https://github.com/Xed-Editor/Xed-Editor)，使用下来感觉不赖。来自 HelloGitHub 的介绍：适用于 Android 的代码编辑器。这是一款开源的 Android 文本与代码编辑器，内置 Termux 终端可运行 Python 和 Node.js，支持 200+ 编程语言语法高亮、自动缩进和文件管理等功能。
 

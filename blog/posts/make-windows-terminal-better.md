@@ -1,6 +1,6 @@
-# 让 windows terminal 更好用
-
 {docsify-my-updater date:2025-02-25}
+
+# 让 windows terminal 更好用
 
 ## 前言
 

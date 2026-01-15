@@ -1,6 +1,6 @@
-# nginx try_files 可以实现先找服务 A，找不到再继续找服务 B
-
 {docsify-my-updater date:2023-05-31}
+
+# nginx try_files 可以实现先找服务 A，找不到再继续找服务 B
 
 ## 背景
 
