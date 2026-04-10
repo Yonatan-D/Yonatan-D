@@ -1,5 +1,11 @@
 # Gists
 
+## powershell 在当前窗口强制刷新环境变量
+
+```bash
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+```
+
 ## 结束指定程序名的所有进程
 
 ```bash
