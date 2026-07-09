@@ -142,13 +142,21 @@ adb工具下载：https://googledownloads.cn/android/repository/platform-tools-l
 adb shell pm list packages -3
 ```
 
-### 4.2 查看 uniapp 的运行日志
+### 4.2 查看第三方应用的运行日志
+
+```shell
+adb shell pidof <package_name> # 获取应用的 PID
+adb logcat --pid=1234          # 使用 PID 过滤日志
+adb logcat --pid=1234 '*:E'    # 只看错误日志，可以添加日志级别过滤
+```
+
+### 4.3 查看 uniapp 的运行日志
 
 ```shell
 adb shell "logcat | grep 'console :'"
 ```
 
-### 4.3 通过 usb 连接电脑 用 fiddle 抓包
+### 4.4 通过 usb 连接电脑 用 fiddle 抓包
 
 背景：不具备网络条件能同时让电脑和手机接入一个局域网。本方法是建立在电脑连接手机热点，手机插 usb 数据线连接电脑，使用 fiddle 进行抓包。由于 Android 7.0 之后默认不信任用户添加到系统的 CA 证书，调试自己的 App 需要在 App 的配置文件里设置信任，或者使用 xposed 模块来强制让 App 信任系统安装的证书，这里不展开。或者看下这篇教程也许对你有启发：[Windows 11 安装 Android 子系统并使用 fiddler 抓包教程](/posts/windows-android-subsystem-with-fiddler)
 
@@ -178,7 +186,7 @@ adb shell settings put global http_proxy :0
 adb shell settings put global https_proxy :0
 ```
 
-### 4.4 使用脚本快速过滤某一进程的日志
+### 4.5 使用脚本快速过滤某一进程的日志
 
 环境：windows下使用wsl去执行bash脚本，adb工具在windows下安装
 
