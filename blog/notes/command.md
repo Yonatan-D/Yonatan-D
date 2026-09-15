@@ -1,4 +1,4 @@
-# Gists
+# Command
 
 ## powershell 在当前窗口强制刷新环境变量
 
