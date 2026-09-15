@@ -17,7 +17,7 @@
 ```jsx
 /*react*/
 <desc>
-### 复现步骤
+# 复现步骤
 
 1. 使用 iOS 原生键盘的中文输入法
 
@@ -106,7 +106,7 @@ iOS 原生键盘在输入拼音时，会直接将拼音字母（如 nihao）填�
 ```jsx
 /*react*/
 <desc>
-### 解决思路
+# 解决思路
 
 1. 使用 onCompositionStart 和 onCompositionEnd 事件兼容 iOS 的中文输入法
 
