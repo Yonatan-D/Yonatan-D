@@ -1,6 +1,4 @@
-# 工具效率
-
-[目录](/notes/tools/)
+# Outline
 
 ```markmap
 ---

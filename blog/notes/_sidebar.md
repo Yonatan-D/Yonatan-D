@@ -1,11 +1,16 @@
-- [Gists](/notes/gists)
-- [Snippets](/notes/snippets)
-- [问题排查](/notes/debug)
-- [报错解决](/notes/error)
-- [工具效率](/notes/tools/)
-  - AI
-    - [ollama](/notes/tools/ai/ai-ollama)
-  - [Curl](/notes/tools/curl/gists)
+- Cheat Sheet
+
+  - [Command](/notes/command)
+  - [Snippets](/notes/snippets)
+
+- Experience
+
+  - [调试技巧](/notes/debug)
+  - [报错解决](/notes/error)
+
+- Tools
+
+  - [*Outline](/notes/tools/README)
   - [DB](/notes/tools/db/sql)
   - Docker
     - [安装使用](/notes/tools/docker/docker-install)
@@ -23,6 +28,7 @@
   - Multipass
     - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
   - [Nginx](/notes/tools/nginx/faq)
+  - [ollama](/notes/tools/ai/ai-ollama)
   - Redis
     - [benchmark](/notes/tools/redis/benchmark)
     - [FAQ](/notes/tools/redis/faq)
@@ -35,4 +41,5 @@
   - WSL
     - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)
   - [Zabbix](/notes/tools/zabbix)
+
 - [搬砖日记](/notes/daily)
