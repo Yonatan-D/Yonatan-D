@@ -1,3 +1,3 @@
 - [Blog](/)
 - [Note](/notes/command)
-- [<i class="iconfont icon-GitHub"></i>](https://github.com/yonatan-d)
+- [<i class="iconfont icon-github"></i>](https://github.com/yonatan-d)
