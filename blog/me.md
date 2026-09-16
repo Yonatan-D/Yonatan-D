@@ -26,16 +26,7 @@ Yonatan 取自名字谐音，自诩是全栈开发者，实际是一个爱折腾
 
 <br/>
 
-本站是基于 Docsify 的 Vue 主题拓展的。
-
-```html
-<!-- custom plugins -->
-<script src="/plugins/docsify-my-navbar/index.js"></script>
-<script src="/plugins/docsify-my-footer/index.js"></script>
-<script src="/plugins/docsify-my-dark-mode/index.js"></script>
-<script src="/plugins/docsify-my-markmap/index.js"></script>
-<script src="/plugins/docsify-my-updater/index.js"></script>
-```
+本站是基于 Docsify 搭建的静态博客。
 
 <br/>
 
