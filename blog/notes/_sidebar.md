@@ -10,36 +10,22 @@
 
 - Tools
 
-  - [*Outline](/notes/tools/README)
-  - [DB](/notes/tools/db/sql)
-  - Docker
-    - [安装使用](/notes/tools/docker/docker-install)
-    - [推荐配置](/notes/tools/docker/docker-daemon)
-    - [白名单 (iptables)](/notes/tools/docker/docker-network)
-    - [清理占用](/notes/tools/docker/docker-clean)
-    - [常见问题](/notes/tools/docker/docker-faq)
+  - [🗃️](/notes/tools/README)
+  - [Curl](/notes/tools/curl)
+  - [DB](/notes/tools/db)
+  - [Docker](/notes/tools/docker)
   - [Git](/notes/tools/git)
-  - GitLab
-    - [安装使用](/notes/tools/gitlab/gitlab-install)
-    - [Pages](/notes/tools/gitlab/gitlab-pages)
-    - [Runner](/notes/tools/gitlab/gitlab-runner)
-    - [CI](/notes/tools/gitlab/gitlab-ci)
+  - [GitLab](/notes/tools/gitlab)
   - [Grafana](/notes/tools/grafana)
-  - Multipass
-    - [解决打开实例shell超时](/notes/tools/multipass/multipass-timeout)
-  - [Nginx](/notes/tools/nginx/faq)
-  - [ollama](/notes/tools/ai/ai-ollama)
-  - Redis
-    - [benchmark](/notes/tools/redis/benchmark)
-    - [FAQ](/notes/tools/redis/faq)
+  - [Multipass](/notes/tools/multipass)
+  - [Nginx](/notes/tools/nginx)
+  - [Ollama](/notes/tools/ollama)
+  - [Redis](/notes/tools/redis)
   - [Supervisor](/notes/tools/supervisor)
+  - [WSL](/notes/tools/wsl)
+  - [Zabbix](/notes/tools/zabbix)
   - OS
     - [CentOS](/notes/tools/os/centos)
-    - UOS
-      - [问题解决](/notes/tools/os/uos/uos-faq)
-      - [软件安装问题](/notes/tools/os/uos/uos-software)
-  - WSL
-    - [解决每次重启需要重置winsock](/notes/tools/wsl/wsl-winsock)
-  - [Zabbix](/notes/tools/zabbix)
+    - [UOS](/notes/tools/os/uos)
 
 - [搬砖日记](/notes/daily)

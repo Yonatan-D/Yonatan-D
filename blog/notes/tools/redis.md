@@ -1,4 +1,38 @@
-## 找出线上Redis连接数异常IP（连接数高）
+# Redis
+
+## 压力测试
+
+1. 压力测试50并发
+
+```bat
+redis-benchmark.exe -h 127.0.0.1 -p 6379 -a 123456 -c 50 -n 1000
+pause
+```
+
+2. 压力测试100并发
+
+```bat
+redis-benchmark.exe -h 127.0.0.1 -p 6379 -a 123456 -c 100 -n 1000
+pause
+```
+
+3. 压力测试500并发
+
+```bat
+redis-benchmark.exe -h 127.0.0.1 -p 6379 -a 123456 -c 500 -n 1000
+pause
+```
+
+4. 压力测试1000并发
+
+```bat
+redis-benchmark.exe -h 127.0.0.1 -p 6379 -a 123456 -c 1000 -n 1000
+pause
+```
+
+## 常见问题
+
+### 找出线上Redis连接数异常IP（连接数高）
 
 ```bash
 redis> info clients
@@ -13,7 +47,7 @@ cat client-list | awk '{print $2}' | awk -F "[=:]" '{print $2}' | sort | uniq -c
 
 > 参考：https://jishuin.proginn.com/p/763bfbd3624d
 
-## Windows编译安装Redis 6.0
+### Windows编译安装Redis 6.0
 
 !> 该方法踩坑，详情见 [连接数不够导致redis假死](#连接数不够导致redis假死)
 
@@ -73,7 +107,7 @@ github 上有人用过 visual Studio 2022 去编译, 性能会好点, 但还是�
 > https://blog.csdn.net/sunbcy/article/details/120323975
 >
 
-## 连接数不够导致redis假死
+### 连接数不够导致redis假死
 
 问题分析：升级了 redis 服务。该 redis 6.x 是 wdinwos 下编译的，读取不到正确最大连接数，连接数不够导致假死
 
@@ -119,7 +153,7 @@ USERProcessHandleQuota  2710(十六进制)/10000(十进制)
 
 同时发现代码有待优化，遍历海量数据不能用 keys 应该用 scan
 
-## redis：max number of clients reached
+### redis：max number of clients reached
 
 redis连接数超了，查看最大连接数：
 
@@ -127,7 +161,7 @@ redis连接数超了，查看最大连接数：
 CONFIG GET maxclients
 ```
 
-## redis：ERR The operating system is not able to handle the specified number of clients
+### redis：ERR The operating system is not able to handle the specified number of clients
 
 linux解决方法（未试验）：
 
@@ -139,9 +173,9 @@ vim /etc/security/limits.conf
 (略)
 ```
 
-## 在 docker arm 容器内编译 redis 踩坑记录
+### 在 docker arm 容器内编译 redis 踩坑记录
 
-### 第①个：lower value of 128
+#### 第①个：lower value of 128
 
 详细：WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
 
@@ -166,7 +200,7 @@ docker run 时使用 -sysctl net.core.somaxconn=1024
 
 或者创建容器时, 加上--privileged即可
 
-### 第②个：overcommit_memory is set to 0! 
+#### 第②个：overcommit_memory is set to 0! 
 
 详细：WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
 > 警告 overcommit_memory 设置为 0！ 在内存不足的情况下，后台保存可能会失败。
@@ -178,7 +212,7 @@ docker run 时使用 -sysctl net.core.somaxconn=1024
 sysctl -w vm.overcommit_memory=1
 ```
 
-### 第③个： ignore-warnings ARM64-COW-BUG
+#### 第③个： ignore-warnings ARM64-COW-BUG
 
 Redis启动失败报错：Redis will now exit to prevent data corruption. Note that it is possible to suppress this warning by setting the following config: ignore-warnings ARM64-COW-BUG
 
@@ -188,7 +222,7 @@ Redis启动失败报错：Redis will now exit to prevent data corruption. Note t
 
 
 
-## Redis: 查看占用内存
+### Redis: 查看占用内存
 
 ```bash
 redis-cli
@@ -202,7 +236,7 @@ used_memory_human:689.12K
 计算得出：705656/1024/1024 = 0.6M,当然直接读_human就好了
 ```
 
-## Redis: `<jemalloc>: Unsupported #system page size`
+### Redis: `<jemalloc>: Unsupported #system page size`
 
 背景：在uos上运行项目集成镜像，内置redis服务启不来。这个镜像的redis是在64位树莓派上编译的，系统是Raspbian（基于debian）
 

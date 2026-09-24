@@ -1,4 +1,6 @@
-# 解决打开实例shell超时
+# Multipass
+
+## 解决打开实例shell超时
 
 记录一次因为系统升级导致 `multipass` 打开实例shell超时的问题，只对我有用，仅供参考。
 
